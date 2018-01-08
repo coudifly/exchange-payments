@@ -26,7 +26,7 @@ def post(command, data={}, headers={}, **kwargs):
     return requests.post(API_URL, data=data, headers=headers, **kwargs).json()
 
 
-class CoinPayments:
+class Gateway:
     def create_transaction(self, buyer_email, amount, currency='BTC', currency1='BTC', currency2='BTC'):
         return post('create_transaction', data={
             'currency': currency,
@@ -43,4 +43,5 @@ class CoinPayments:
         return post('get_tx_info', data={'txid': transaction_id})
 
     def get_address(self, currency):
-        return post('get_callback_address', data={'currency': currency})
+        address = post('get_callback_address', data={'currency': currency})
+        return address['result']['address']
