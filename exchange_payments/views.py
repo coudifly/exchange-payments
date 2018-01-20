@@ -2,11 +2,13 @@ import importlib
 
 from django.views.generic import View
 from django.utils.decorators import method_decorator
+from django.db import transaction
+from django.conf import settings
 from account.decorators import login_required
 from jsonview.decorators import json_view
 
 from exchange_core.models import Currencies, Accounts
-from exchange_payments.models import CurrencyGateway
+from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.gateways.coinpayments import Gateway
 
 
@@ -20,6 +22,7 @@ class GetAddressView(View):
 		if currencies.exists():
 			currency = currencies.first()
 			account = Accounts.objects.get(user=request.user, currency=currency)
+
 
 			if account.deposit_address:
 				address = account.deposit_address
