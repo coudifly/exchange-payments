@@ -37,10 +37,15 @@ class CompanyBanks(TimeStampedModel, BaseModel):
     agency = models.CharField(max_length=10)
     account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES)
     account_number = models.CharField(max_length=20)
+    title = models.CharField(max_length=100, verbose_name=_("Title"), null=True)
     name = models.CharField(max_length=100, verbose_name=_("Company Name"))
     document = models.CharField(max_length=20, verbose_name=_("CNPJ"))
     # Caso o banco entre em desuso, o registro não deverá ser apagado, mas sim inativado através da flag is_active
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title or ''
+
 
     class Meta:
         verbose_name = _("Company Bank")
@@ -50,10 +55,10 @@ class CompanyBanks(TimeStampedModel, BaseModel):
 class BankDeposits(TimeStampedModel, BaseModel):
     STATUS = Choices('pending', 'deposited', 'expired')
 
-    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE)
+    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("Company Bank"))
     user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE)
     # Valor original do depósito
-    amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'))
+    amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("R$ Amount"))
     # O range_amount varia de acordo com o RANGE, se o range estiver desabilitado, range_amount será igual a 0
     range_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'))
     # Armazena o valor liquido do depósito, que é o valor do amount - o valor da taxa de depósito
@@ -75,7 +80,7 @@ class BankDeposits(TimeStampedModel, BaseModel):
         verbose_name_plural = _("Bank Deposits")
 
     @classmethod
-    def gen_range_amount(cls, user, amount, tries=0):
+    def gen_range_amount(cls, amount, tries=0):
         if tries > 100:
             raise Exception('Too many tries for charge amount generation')
 
@@ -84,7 +89,7 @@ class BankDeposits(TimeStampedModel, BaseModel):
 
         # Se existir um deposito do usuário com o mesmo
         if bank_deposits_today.exists():
-            return cls.gen_range_amount(user, amount, tries)
+            return cls.gen_range_amount(amount, tries)
 
         return range_amount
 
