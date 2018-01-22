@@ -53,7 +53,7 @@ class CompanyBanks(TimeStampedModel, BaseModel):
 
 
 class BankDeposits(TimeStampedModel, BaseModel):
-    STATUS = Choices('pending', 'deposited', 'expired')
+    STATUS = Choices('pending', 'confirmed', 'deposited', 'expired')
 
     company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("Company Bank"))
     user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE)
@@ -64,14 +64,15 @@ class BankDeposits(TimeStampedModel, BaseModel):
     # Armazena o valor liquido do depósito, que é o valor do amount - o valor da taxa de depósito
     credited_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'))
     
-    holder_agency = models.CharField(max_length=10, null=True, blank=True)
-    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, null=True, blank=True)
-    holder_account_number = models.CharField(max_length=20, null=True, blank=True)
-    holder_name = models.CharField(max_length=100, verbose_name=_("Company Name"), null=True, blank=True)
-    holder_document = models.CharField(max_length=20, verbose_name=_("CPF/CNPJ"), null=True, blank=True)
+    holder_bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Holder Bank"), null=True, blank=True)
+    holder_agency = models.CharField(max_length=10, verbose_name=_("Holder Agency"), null=True, blank=True)
+    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Holder Account Type"), null=True, blank=True)
+    holder_account_number = models.CharField(max_length=20, verbose_name=_("Holder Account Number"), null=True, blank=True)
+    holder_name = models.CharField(max_length=100, verbose_name=_("Holder Name"), null=True, blank=True)
+    holder_document = models.CharField(max_length=20, verbose_name=_("Holder Document CPF/CNPJ"), null=True, blank=True)
 
     receipt = models.ImageField(null=True, blank=True)
-    authentication_code = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Company Name"))
+    authentication_code = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Authentication Code"))
 
     status = models.CharField(max_length=20,    default=STATUS.pending, choices=STATUS)
 
@@ -92,6 +93,22 @@ class BankDeposits(TimeStampedModel, BaseModel):
             return cls.gen_range_amount(amount, tries)
 
         return range_amount
+
+    @property
+    def status_title(self):
+        return self.status.title()
+
+    # Propriedade para pegar a classe de alerta no template
+    @property
+    def status_type(self):
+        if self.status == self.STATUS.pending:
+            return 'danger'
+        if self.status == self.STATUS.confirmed:
+            return 'warning'
+        if self.status == self.STATUS.deposited:
+            return 'success'
+        if self.status == self.STATUS.expired:
+            return 'info'
 
 
 @admin.register(CurrencyGateway)

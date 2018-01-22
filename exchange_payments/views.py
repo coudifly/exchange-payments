@@ -16,7 +16,7 @@ from exchange_core.models import Currencies, Accounts
 from exchange_core.base_views import MultiFormView
 from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.gateways.coinpayments import Gateway
-from exchange_payments.forms import NewDepositForm
+from exchange_payments.forms import NewDepositForm, ConfirmDepositForm
 
 
 @method_decorator([login_required, json_view], name='dispatch')
@@ -78,4 +78,24 @@ class BankDepositView(MultiFormView):
         bank_deposit.save()
 
         messages.success(self.request, _("Your new deposit has been created"))
+        return redirect(reverse('payments>bank-deposit'))
+
+
+@method_decorator([login_required], name='dispatch')
+class ConfirmDepositView(MultiFormView):
+    template_name = 'payments/confirm-deposit.html'
+
+    forms = {
+        'confirm_deposit': ConfirmDepositForm
+    }
+
+    def get_confirm_deposit_instance(self):
+        return BankDeposits.objects.get(pk=self.kwargs['bank_deposit_pk'], user=self.request.user)
+
+    def confirm_deposit_form_valid(self, form):
+        bank_deposit = form.save(commit=False)
+        bank_deposit.status = BankDeposits.STATUS.confirmed
+        bank_deposit.save()
+        
+        messages.success(self.request, _("Your confirmation has been received"))
         return redirect(reverse('payments>bank-deposit'))

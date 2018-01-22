@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
 
+from exchange_core.mixins import RequiredFieldsMixin
 from exchange_core.choices import BR_BANKS_CHOICES
 from exchange_payments.models import BankDeposits, CompanyBanks
 
@@ -33,3 +34,30 @@ class NewDepositForm(forms.ModelForm):
             raise forms.ValidationError(_("You've achieve the daily deposit limit of: ") + str(settings.BR_DEPOSIT_DAILY_LIMIT))
 
         return amount
+
+
+class ConfirmDepositForm(RequiredFieldsMixin, forms.ModelForm):
+    form_name = forms.CharField(widget=forms.HiddenInput(), initial='confirm_deposit')
+
+    class Meta:
+        model = BankDeposits
+        fields = (
+            'holder_bank',
+            'holder_agency',
+            'holder_account_type',
+            'holder_account_number',
+            'holder_name',
+            'holder_document',
+            'authentication_code',
+            'receipt',
+        )
+        fields_required = (
+            'holder_bank',
+            'holder_agency',
+            'holder_account_type',
+            'holder_account_number',
+            'holder_name',
+            'holder_document',
+            'authentication_code',
+            'receipt',
+        )
