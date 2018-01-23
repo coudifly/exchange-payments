@@ -90,7 +90,8 @@ class ConfirmDepositView(MultiFormView):
     }
 
     def get_confirm_deposit_instance(self):
-        return BankDeposits.objects.get(pk=self.kwargs['bank_deposit_pk'], user=self.request.user)
+        statuses = [BankDeposits.STATUS.pending, BankDeposits.STATUS.confirmed]
+        return BankDeposits.objects.get(pk=self.kwargs['bank_deposit_pk'], user=self.request.user, status__in=statuses)
 
     def confirm_deposit_form_valid(self, form):
         bank_deposit = form.save(commit=False)
