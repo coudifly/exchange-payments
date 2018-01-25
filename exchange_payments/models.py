@@ -20,7 +20,7 @@ from exchange_core.choices import BR_BANKS_CHOICES, BR_ACCOUNT_TYPES_CHOICES
 
 # Diz para o moeda X que gateway ela deverá usar
 class CurrencyGateway(TimeStampedModel, BaseModel):
-    currency = models.ForeignKey('exchange_core.Currencies', related_name='gateway', on_delete=models.CASCADE)
+    currency = models.OneToOneField('exchange_core.Currencies', related_name='gateway', on_delete=models.CASCADE)
     gateway = models.CharField(max_length=50, choices=settings.SUPPORTED_PAYMENT_GATEWAYS)
 
     def __str__(self):
@@ -117,9 +117,6 @@ class CurrencyGatewayAdmin(admin.ModelAdmin):
 
     def symbol(self, o):
         return o.currency.symbol
-
-    def has_add_permission(self, request):
-        return False
 
     def has_delete_permission(self, *args, **kwargs):
         return False
