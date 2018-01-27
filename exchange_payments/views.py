@@ -1,6 +1,7 @@
 import importlib
 
 from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -12,7 +13,7 @@ from django.urls import reverse
 from account.decorators import login_required
 from jsonview.decorators import json_view
 
-from exchange_core.models import Currencies, Accounts
+from exchange_core.models import Currencies, Accounts, Statement
 from exchange_core.base_views import MultiFormView
 from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.gateways.coinpayments import Gateway
@@ -38,13 +39,40 @@ class GetAddressView(View):
                 currency_gateway = CurrencyGateway.objects.get(currency=currency)
                 gateway_module = importlib.import_module('exchange_payments.gateways.{}'.format(currency_gateway.gateway))
                 gateway = gateway_module.Gateway()
-                address = gateway.get_address(currency.symbol)
+                address = gateway.get_address(account)
 
                 # Associa a nova carteira a conta da moeda do usuário
                 account.deposit_address = address
                 account.save()
 
         return {'address': address}
+
+
+@method_decorator([csrf_exempt, json_view], name='dispatch')
+class ProcessWebhookView(View):
+    def post(self, request, gateway, account_pk):
+        # Importa dinamicamente o modulo do gateway configurado para a moeda
+        gateway_module = importlib.import_module('exchange_payments.gateways.{}'.format(gateway))
+        gateway = gateway_module.Gateway()
+        account = Accounts.objects.get(pk=account_pk)
+
+        # Checa se o deposito pode ser feito
+        if gateway.can_deposit(account, request.POST):
+            # Adiciona o saldo na conta do usuario, e cria a entrada no extrato
+            with transaction.atomic():
+                account.deposit += gateway.deposit_amount
+                account.save()
+
+                statement = Statement()
+                statement.account = account
+                statement.description = 'Deposit'
+                statement.amount = gateway.deposit_amount
+                statement.type = Statement.TYPES.deposit
+                statement.save()
+                
+                return {'amount': statement.amount}
+
+        return {'error': _("Deposit can't be done.")}
 
 
 @method_decorator([login_required], name='dispatch')

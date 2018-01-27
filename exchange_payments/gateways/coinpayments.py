@@ -1,9 +1,13 @@
-from urllib.parse import urlencode
-from django.conf import settings
-
 import hmac
 import hashlib
 import requests
+
+from decimal import Decimal
+from urllib.parse import urlencode
+
+from django.conf import settings
+from django.db import transaction
+from django.urls import reverse
 
 
 API_URL = 'https://www.coinpayments.net/api.php'
@@ -42,6 +46,18 @@ class Gateway:
     def get_transaction(self, transaction_id):
         return post('get_tx_info', data={'txid': transaction_id})
 
-    def get_address(self, currency):
-        address = post('get_callback_address', data={'currency': currency})
+    def get_address(self, account):
+        ipn_url = settings.DOMAIN + reverse('payments>proccess-webhook', kwargs={'gateway': 'coinpayments', 'account_pk': account.pk})
+        address = post('get_callback_address', data={'currency': account.currency.symbol, 'ipn_url': ipn_url})
         return address['result']['address']
+
+    def can_deposit(self, account, data):
+        ipn_type = data['ipn_type']
+        currency = data['currency']
+        status = int(data['status'])
+        amount = Decimal(data['amount'])
+
+        # Checa se o deposito e valido
+        if ipn_type == 'deposit' and account.currency.symbol.upper() == currency.upper() and status >= 100:
+            self.deposit_amount = amount
+            return True
