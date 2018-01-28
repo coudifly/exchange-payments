@@ -56,8 +56,9 @@ class Gateway:
         currency = data['currency']
         status = int(data['status'])
         amount = Decimal(data['amount'])
+        fee = Decimal(data['fee'])
 
         # Checa se o deposito e valido
         if ipn_type == 'deposit' and account.currency.symbol.upper() == currency.upper() and status >= 100:
-            self.deposit_amount = amount
+            self.deposit_amount = amount - fee
             return True
