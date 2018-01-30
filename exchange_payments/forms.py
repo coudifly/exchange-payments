@@ -2,9 +2,11 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
+from django_otp import user_has_device, match_token
 
 from exchange_core.mixins import RequiredFieldsMixin
 from exchange_core.choices import BR_BANKS_CHOICES
+from exchange_core.models import Accounts
 from exchange_payments.models import BankDeposits, CompanyBanks
 
 
@@ -61,3 +63,39 @@ class ConfirmDepositForm(RequiredFieldsMixin, forms.ModelForm):
             'authentication_code',
             'receipt',
         )
+
+
+class NewWithdrawForm(forms.Form):
+    amount = forms.DecimalField()
+    address = forms.CharField()
+    password = forms.CharField()
+    code = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        self.coin = kwargs.pop('coin')
+        super().__init__(*args, **kwargs)
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        account = Accounts.objects.get(user=self.user, currency__symbol=self.coin)
+        if amount < settings.WITHDRAW_MIN_AMOUNT:
+            raise forms.ValidationError(_("Min withdraw is: ") + str(settings.WITHDRAW_MIN_AMOUNT))
+        if amount > settings.WITHDRAW_MAX_AMOUNT:
+            raise forms.ValidationError(_("Max withdraw is: ") + str(settings.WITHDRAW_MAX_AMOUNT))
+        if amount > account.deposit:
+            raise forms.ValidationError(_("You doesn't have enought balance"))
+        return amount
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if not self.user.check_password(password):
+            raise forms.ValidationError(_("Wrong password informed"))
+        return password
+
+
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        if user_has_device(self.user) and not match_token(self.user, code):
+            raise forms.ValidationError(_("Wrong two factor code informed"))
+        return True

@@ -33,5 +33,6 @@ settings.BR_DEPOSIT_DAILY_LIMIT = config('BR_DEPOSIT_DAILY_LIMIT', default=5, ca
 
 # Configurações de saque
 settings.WITHDRAW_FEE = config('WITHDRAW_FEE', default=Decimal('0.005'), cast=Decimal)
+settings.WITHDRAW_MIN_AMOUNT = config('WITHDRAW_MIN_AMOUNT', default=Decimal('0.001'), cast=Decimal)
+settings.WITHDRAW_MAX_AMOUNT = config('WITHDRAW_MAX_AMOUNT', default=Decimal('1000000.00'), cast=Decimal)
 settings.WITHDRAW_RECEIVE_HOURS = config('WITHDRAW_RECEIVE_HOURS', default=48, cast=int)
-

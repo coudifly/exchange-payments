@@ -1,4 +1,5 @@
 import importlib
+from decimal import Decimal
 
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
@@ -13,11 +14,11 @@ from django.urls import reverse
 from account.decorators import login_required
 from jsonview.decorators import json_view
 
-from exchange_core.models import Currencies, Accounts, Statement
+from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
 from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.gateways.coinpayments import Gateway
-from exchange_payments.forms import NewDepositForm, ConfirmDepositForm
+from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
 
 
 @method_decorator([login_required, json_view], name='dispatch')
@@ -128,3 +129,58 @@ class ConfirmDepositView(MultiFormView):
         
         messages.success(self.request, _("Your confirmation has been received"))
         return redirect(reverse('payments>bank-deposit'))
+
+
+@method_decorator([login_required, json_view], name='dispatch')
+class NewWithdrawView(View):
+    def post(self, request):
+        coin = request.POST['coin']
+        request.POST._mutable = True
+
+        # Define um valor padrao para o address caso o deposito seja em reais
+        # Fazemos isto, pois esse campo precisa passar pela validacao do formulario
+        if coin == settings.BRL_CURRENCY_SYMBOL:
+            request.POST['address'] = 'whatever'
+        withdraw_form = NewWithdrawForm(request.POST, user=request.user, coin=coin)
+
+        if not withdraw_form.is_valid():
+            return {'status': 'error', 'errors': withdraw_form.errors}
+
+        with transaction.atomic():
+            account = Accounts.objects.get(user=request.user, currency__symbol=coin)
+
+            if coin == settings.BRL_CURRENCY_SYMBOL:
+                withdraw = BankWithdraw()
+            else:
+                withdraw = CryptoWithdraw()
+
+            withdraw.account = account
+            withdraw.deposit = account.deposit
+            withdraw.reserved = account.reserved
+            withdraw.amount = withdraw_form.cleaned_data['amount']
+
+            if coin == settings.BRL_CURRENCY_SYMBOL:
+                br_bank_account = request.user.br_bank_account
+
+                withdraw.bank = br_bank_account.bank
+                withdraw.agency = br_bank_account.agency
+                withdraw.account_type = br_bank_account.account_type
+                withdraw.account_number = br_bank_account.account_number
+            else:
+                withdraw.address = withdraw_form.cleaned_data['address']
+
+            withdraw.save()
+
+            account.deposit -= withdraw.amount
+            account.save()
+
+            statement = Statement()
+            statement.account = account
+            statement.description = 'Withdraw'
+            statement.type = 'withdraw'
+            statement.amount = Decimal('0.00') - withdraw.amount
+            statement.save()
+
+            return {'status': 'success', 'amount': withdraw.amount}
+
+
