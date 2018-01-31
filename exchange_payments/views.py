@@ -11,6 +11,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
+from django_otp import user_has_device
 from account.decorators import login_required
 from jsonview.decorators import json_view
 
@@ -135,12 +136,19 @@ class ConfirmDepositView(MultiFormView):
 class NewWithdrawView(View):
     def post(self, request):
         coin = request.POST['coin']
+        # O POST e imutavel por default, sendo assim, 
+        # precisamos alterar essa caracteristia dicionario dicionario para altera-lo
         request.POST._mutable = True
 
         # Define um valor padrao para o address caso o deposito seja em reais
         # Fazemos isto, pois esse campo precisa passar pela validacao do formulario
         if coin == settings.BRL_CURRENCY_SYMBOL:
             request.POST['address'] = 'whatever'
+        # Define um valor padrao para code do two factor, caso o usuario nao tenha configurado ele ainda
+        # Fazemos isto, pois esse campo precisa passar pela validacao do formulario
+        if not user_has_device(request.user):
+            request.POST['code'] = '123'
+
         withdraw_form = NewWithdrawForm(request.POST, user=request.user, coin=coin)
 
         if not withdraw_form.is_valid():

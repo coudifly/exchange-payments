@@ -98,4 +98,4 @@ class NewWithdrawForm(forms.Form):
         code = self.cleaned_data['code']
         if user_has_device(self.user) and not match_token(self.user, code):
             raise forms.ValidationError(_("Wrong two factor code informed"))
-        return True
+        return code
