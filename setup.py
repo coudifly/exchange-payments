@@ -3,6 +3,9 @@ from setuptools import setup, find_packages
 
 __VERSION__ = '0.1'
 
+REQUIREMENTS = [
+	'python-bitcoinlib'
+]
 
 setup(
 	name='exchange-payments',
@@ -11,6 +14,7 @@ setup(
 	author='Juliano Gouveia',
 	author_email='juliano@neosacode.com',
 	keywords='exchange, payments, neosacode, coins',
+	install_requires=REQUIREMENTS,
 	packages=find_packages(exclude=[]),
 	python_requires='>=3.5'
 )

@@ -12,13 +12,20 @@ PACKAGE_NAME = 'exchange_payments'
 # Diz ao Django aonde está a configuração desse modulo
 default_app_config = PACKAGE_NAME + '.apps.Config'
 
-# Coin Payments configurações de autenticação
+# Coin Payments configurações
 settings.COINPAYMENTS_PUBLIC_KEY = config('COINPAYMENTS_PUBLIC_KEY', default=None)
 settings.COINPAYMENTS_PRIVATE_KEY = config('COINPAYMENTS_PRIVATE_KEY', default=None)
 
+# Tcoin configurações
+settings.TCOIN_RPC_USERNAME = config('TCOIN_RPC_USERNAME', default=None)
+settings.TCOIN_RPC_PASSWORD = config('TCOIN_RPC_PASSWORD', default=None)
+settings.TCOIN_RPC_URL = config('TCOIN_RPC_URL', default=None)
+settings.TCOIN_RPC_PROXY = config('TCOIN_RPC_PROXY', default=None)
+
 # Lista de gateways de pagamento suportados
 settings.SUPPORTED_PAYMENT_GATEWAYS = [
-	('coinpayments', 'CoinPayments')
+	('coinpayments', 'CoinPayments'),
+	('tcoin', 'Tcoin'),
 ]
 
 # Configurações de depósito
