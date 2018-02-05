@@ -21,8 +21,7 @@ class Gateway:
         pass
 
     def get_address(self, account):
-        address = rpc_proxy.getnewaddress()
-        return address['result']
+        return rpc_proxy.getnewaddress()
 
     def can_deposit(self, account, data):
         pass
