@@ -28,6 +28,11 @@ settings.SUPPORTED_PAYMENT_GATEWAYS = [
 	('tcoin', 'Tcoin'),
 ]
 
+# Configurações do Real Brasileiro
+settings.BRL_CURRENCY_SYMBOL = config('BRL_CURRENCY_SYMBOL', default='BRL')
+# Configuracoes da TCOIN
+settings.TCOIN_CURRENCY_SYMBOL = config('TCOIN_CURRENCY_SYMBOL', default='TCN')
+
 # Configurações de depósito
 settings.DEPOSIT_FEE = config('DEPOSIT_FEE', default=Decimal('0.05'), cast=Decimal)
 settings.BR_DEPOSIT_MIN = config('BR_DEPOSIT_MIN', default=Decimal('50.00'), cast=Decimal)
