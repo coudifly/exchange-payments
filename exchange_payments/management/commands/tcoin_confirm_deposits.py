@@ -31,7 +31,7 @@ class Command(BaseCommand):
 				account = accounts.first()
 
 				# Valida se a transacao ja foi processada
-				statements = Statement.objects.get(account=account, tx_id=tx['txid'])
+				statements = Statement.objects.filter(account=account, tx_id=tx['txid'])
 				if statements.exists():
 					continue
 
