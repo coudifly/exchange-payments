@@ -28,6 +28,8 @@ class Command(BaseCommand):
 				if not accounts.exists():
 					continue
 
+				account = accounts.first()
+
 				# Valida se a transacao ja foi processada
 				statements = Statement.objects.get(account=account, tx_id=tx['txid'])
 				if statements.exists():
