@@ -1,0 +1,18 @@
+{% load i18n %}
+
+{% block subject %}{% trans "Confirm withdraw for user: " %}{{ withdraw.account.user.username }}{% endblock %}
+
+{% block html %}
+	<h2>{% trans "A new withdraw has been requested" %}</h2>
+	<h4>{% trans "Withdraw info:" %}</h4>
+	<p>
+		<span>{% trans "Requested by" %}: </span><strong>{{ withdraw.account.user.first_name }} {{ withdraw.account.user.last_name }} ({{ withdraw.account.user.username }})</strong><br>
+		<span>{% trans "Requested at" %}: </span><strong>{{ withdraw.created|date:"SHORT_DATETIME_FORMAT" }}</strong><br>
+		<span>{% trans "Requested user balance" %}: </span><strong>{{ withdraw.account.balance|floatformat:8 }}</strong><br>
+		<span>{% trans "Requested amount" %}: </span><strong>{{ withdraw.amount|floatformat:8 }}</strong><br>
+		<span>{% trans "Requested currency" %}: </span><strong>{{ withdraw.account.currency.name }} - {{ withdraw.account.currency.symbol }}</strong><br>
+	</p>
+
+	<p>{% trans "Click on the link below to approve the withdraw" %}</p>
+	<a href="{{ approve_link }}">{% trans "Clik here to aprove" %}</a>
+{% endblock %}

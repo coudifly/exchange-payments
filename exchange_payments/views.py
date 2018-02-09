@@ -14,12 +14,14 @@ from django.urls import reverse
 from django_otp import user_has_device
 from account.decorators import login_required
 from jsonview.decorators import json_view
+from simplecrypt import encrypt, decrypt
 
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
 from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.gateways.coinpayments import Gateway
 from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
+from templated_email import send_templated_mail
 
 
 @method_decorator([login_required, json_view], name='dispatch')
@@ -165,7 +167,7 @@ class NewWithdrawView(View):
             withdraw.account = account
             withdraw.deposit = account.deposit
             withdraw.reserved = account.reserved
-            withdraw.amount = withdraw_form.cleaned_data['amount']
+            withdraw.amount = Decimal('0.00') - withdraw_form.cleaned_data['amount']
 
             if coin == settings.BRL_CURRENCY_SYMBOL:
                 br_bank_account = request.user.br_bank_account
@@ -178,6 +180,18 @@ class NewWithdrawView(View):
                 withdraw.address = withdraw_form.cleaned_data['address']
 
             withdraw.save()
+
+            if coin != settings.BRL_CURRENCY_SYMBOL:
+                withdraw_hash = encrypt(settings.SECRET_KEY, str(withdraw.pk)).hex()
+                approve_link = settings.DOMAIN + reverse('payments>approve-withdraw', kwargs={'withdraw_hash': withdraw_hash})
+
+                # Envia o email de confirmacao do deposito
+                send_templated_mail(
+                    template_name='approve-withdraw', 
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    context={'withdraw': withdraw, 'approve_link': approve_link}, 
+                    recipient_list=settings.WITHDRAW_APPROVE_EMAILS
+                )
 
             account.deposit -= withdraw.amount
             account.save()
@@ -192,3 +206,23 @@ class NewWithdrawView(View):
             return {'status': 'success', 'amount': withdraw.amount}
 
 
+# Automatizacao do saque em Criptomoeda
+@method_decorator([json_view], name='dispatch')
+class ApproveWithdrawView(View):
+    def get(self, request, withdraw_hash):
+        # Desencripta e pega o saque da crypto
+        withdraw_pk = decrypt(settings.SECRET_KEY, bytes.fromhex(withdraw_hash))
+        withdraw = CryptoWithdraw.objects.get(pk=withdraw_pk, status=CryptoWithdraw.STATUS.requested)
+
+        # Pega o gateway de pagamento da Criptomoeda
+        currency_gateway = CurrencyGateway.objects.get(currency=withdraw.account.currency)
+        gateway_module = importlib.import_module('exchange_payments.gateways.{}'.format(currency_gateway.gateway))
+        gateway = gateway_module.Gateway()
+
+        # Chama o metodo de saque da criptomoeda passando o saque ao metodo
+        tx_id = gateway.to_withdraw(withdraw)
+        withdraw.tx_id = tx_id
+        withdraw.status = CryptoWithdraw.STATUS.paid
+        withdraw.save()
+
+        return {'status': _("Success")}

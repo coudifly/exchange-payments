@@ -21,6 +21,7 @@ settings.TCOIN_RPC_USERNAME = config('TCOIN_RPC_USERNAME', default=None)
 settings.TCOIN_RPC_PASSWORD = config('TCOIN_RPC_PASSWORD', default=None)
 settings.TCOIN_RPC_URL = config('TCOIN_RPC_URL', default=None)
 settings.TCOIN_RPC_PROXY = config('TCOIN_RPC_PROXY', default=None)
+settings.TCOIN_SUBTRACT_FEE_FROM_AMOUNT = config('TCOIN_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
 
 # Lista de gateways de pagamento suportados
 settings.SUPPORTED_PAYMENT_GATEWAYS = [
@@ -48,3 +49,4 @@ settings.WITHDRAW_FEE = config('WITHDRAW_FEE', default=Decimal('0.005'), cast=De
 settings.WITHDRAW_MIN_AMOUNT = config('WITHDRAW_MIN_AMOUNT', default=Decimal('0.001'), cast=Decimal)
 settings.WITHDRAW_MAX_AMOUNT = config('WITHDRAW_MAX_AMOUNT', default=Decimal('1000000.00'), cast=Decimal)
 settings.WITHDRAW_RECEIVE_HOURS = config('WITHDRAW_RECEIVE_HOURS', default=48, cast=int)
+settings.WITHDRAW_APPROVE_EMAILS = config('WITHDRAW_APPROVE_EMAILS', cast=config.list)

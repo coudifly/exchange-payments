@@ -62,3 +62,12 @@ class Gateway:
         if ipn_type == 'deposit' and account.currency.symbol.upper() == currency.upper() and status >= 100:
             self.deposit_amount = amount - fee
             return True
+
+    def to_withdraw(self, withdraw):
+        data = {
+            'amount': abs(withdraw.amount), 
+            'currency': withdraw.account.currency.symbol,
+            'address': withdraw.address
+        }
+        withdraw_response = post('create_withdrawal', data=data)
+        return withdraw_response['result']['id']

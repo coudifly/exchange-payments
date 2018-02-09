@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from bitcoin.rpc import Proxy
 from django.conf import settings
 
@@ -25,3 +27,7 @@ class Gateway:
 
     def can_deposit(self, account, data):
         pass
+
+    def to_withdraw(self, withdraw):
+        satoshis_amount = 100000000 * abs(withdraw.amount)
+        return rpc_proxy.sendtoaddress(withdraw.address, satoshis_amount, subtractfeefromamount=True)
