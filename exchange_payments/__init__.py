@@ -45,8 +45,4 @@ settings.BR_DEPOSIT_RANGE_END = config('BR_DEPOSIT_RANGE_END', default=5, cast=i
 settings.BR_DEPOSIT_DAILY_LIMIT = config('BR_DEPOSIT_DAILY_LIMIT', default=5, cast=int) # Limite de depositos permitidos por dia
 
 # Configurações de saque
-settings.WITHDRAW_FEE = config('WITHDRAW_FEE', default=Decimal('0.005'), cast=Decimal)
-settings.WITHDRAW_MIN_AMOUNT = config('WITHDRAW_MIN_AMOUNT', default=Decimal('0.001'), cast=Decimal)
-settings.WITHDRAW_MAX_AMOUNT = config('WITHDRAW_MAX_AMOUNT', default=Decimal('1000000.00'), cast=Decimal)
-settings.WITHDRAW_RECEIVE_HOURS = config('WITHDRAW_RECEIVE_HOURS', default=48, cast=int)
 settings.WITHDRAW_APPROVE_EMAILS = config('WITHDRAW_APPROVE_EMAILS', cast=config.list)
