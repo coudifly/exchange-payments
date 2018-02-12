@@ -79,10 +79,10 @@ class NewWithdrawForm(forms.Form):
     def clean_amount(self):
         amount = self.cleaned_data['amount']
         account = Accounts.objects.get(user=self.user, currency__symbol=self.coin)
-        if amount < settings.WITHDRAW_MIN_AMOUNT:
-            raise forms.ValidationError(_("Min withdraw is: ") + str(settings.WITHDRAW_MIN_AMOUNT))
-        if amount > settings.WITHDRAW_MAX_AMOUNT:
-            raise forms.ValidationError(_("Max withdraw is: ") + str(settings.WITHDRAW_MAX_AMOUNT))
+        if amount < account.currency.withdraw_min:
+            raise forms.ValidationError(_("Min withdraw is: ") + str(account.currency.withdraw_min))
+        if amount > account.currency.withdraw_max:
+            raise forms.ValidationError(_("Max withdraw is: ") + str(account.currency.withdraw_max))
         if amount > account.deposit:
             raise forms.ValidationError(_("You doesn't have enought balance"))
         return amount

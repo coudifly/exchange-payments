@@ -20,10 +20,10 @@
           </div>
           <p style="font-size: 14px; margin-top: 10px;">
             <span v-text="available_amount_text"></span> <strong v-text="available_amount"></strong><br>
-            {% trans "Min withdraw amount is:" %} <strong>{{ settings.WITHDRAW_MIN_AMOUNT }}</strong><br>
-            {% trans "Max withdraw amount is:" %} <strong>{{ settings.WITHDRAW_MAX_AMOUNT }}</strong><br>
-            {% trans "Withdraw fee is:" %} <strong>{{ settings.WITHDRAW_FEE }}%</strong><br>
-            {% trans "Max receive hours is:" %} <strong>{{ settings.WITHDRAW_RECEIVE_HOURS }} {% trans "hours" %}</strong>
+            {% trans "Min withdraw amount is:" %} <strong v-text="currency.withdraw_min"></strong><br>
+            {% trans "Max withdraw amount is:" %} <strong v-text="currency.withdraw_max"></strong><br>
+            {% trans "Withdraw fee is:" %} <strong v-text="currency.withdraw_fee + '%'"></strong><br>
+            {% trans "Max receive hours is:" %} <strong v-text="currency.withdraw_receive_hours + ' {% trans "hours" %}'"></strong>
           </p>
         </div>
 
