@@ -24,7 +24,7 @@ from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithd
 from templated_email import send_templated_mail
 
 
-@method_decorator([login_required, json_view, csrf_exempt], name='dispatch')
+@method_decorator([login_required, json_view], name='dispatch')
 class GetAddressView(View):
     def post(self, request):
         address = None
