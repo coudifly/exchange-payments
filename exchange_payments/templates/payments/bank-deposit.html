@@ -26,9 +26,9 @@
                 <div class="card-body">
                     <h4 class="card-title"><i class="zmdi zmdi-account-add"></i> {% trans "New Deposit" %}</h4>
                     <ul>
-                        <li>{% trans "Daily deposit limit is: " %} <strong>{{ settings.BR_DEPOSIT_DAILY_LIMIT }} {% trans "deposits" %}</strong></li>
-                    	<li>{% trans "Min deposit is: " %}<strong>R$ {{ settings.BR_DEPOSIT_MIN }}</strong></li>
-                    	<li>{% trans "Max deposit is: " %}<strong>R$ {{ settings.BR_DEPOSIT_MAX }}</strong></li>
+                        <li>{% trans "Daily deposit limit is: " %} <strong>{{ BR_DEPOSIT_DAILY_LIMIT }} {% trans "deposits" %}</strong></li>
+                    	<li>{% trans "Min deposit is: " %}<strong>R$ {{ BR_DEPOSIT_MIN }}</strong></li>
+                    	<li>{% trans "Max deposit is: " %}<strong>R$ {{ BR_DEPOSIT_MAX }}</strong></li>
                     	<li>{% trans "Dedposit fee is: " %}<strong>{{ deposit_fee_percent }}</strong></li>
                     </ul>
                     <hr>
@@ -60,7 +60,7 @@
 					   <button type="submit" class="btn btn-primary btn-block">{% trans "Create" %}</button>
                     </form>
                     {% else %}
-                    <div class="alert alert-danger"><strong>{% trans "You've achieve the daily deposit limit of: " %} {{ settings.BR_DEPOSIT_DAILY_LIMIT }} {% trans "deposits" %}</strong></div>
+                    <div class="alert alert-danger"><strong>{% trans "You've achieve the daily deposit limit of: " %} {{ BR_DEPOSIT_DAILY_LIMIT }} {% trans "deposits" %}</strong></div>
                     {% endif %}
                 </div>
             </div>
