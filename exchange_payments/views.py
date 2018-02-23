@@ -139,7 +139,7 @@ class NewWithdrawView(View):
     def post(self, request):
         coin = request.POST['coin']
         # O POST e imutavel por default, sendo assim, 
-        # precisamos alterar essa caracteristia dicionario dicionario para altera-lo
+        # precisamos alterar essa caracteristica do object para alterar seus valores
         request.POST._mutable = True
 
         # Define um valor padrao para o address caso o deposito seja em reais
@@ -199,7 +199,7 @@ class NewWithdrawView(View):
             statement = Statement()
             statement.account = account
             statement.description = 'Withdraw'
-            statement.type = 'withdraw'
+            statement.type = Statement.TYPES.withdraw
             statement.amount = Decimal('0.00') - withdraw.amount
             statement.save()
 
