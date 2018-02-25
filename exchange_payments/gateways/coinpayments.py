@@ -6,7 +6,6 @@ from decimal import Decimal
 from urllib.parse import urlencode
 
 from django.conf import settings
-from django.db import transaction
 from django.urls import reverse
 
 
