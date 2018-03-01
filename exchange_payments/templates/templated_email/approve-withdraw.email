@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% block subject %}{% trans "Confirm withdraw for user: " %}{{ withdraw.account.user.username }}{% endblock %}
+{% block subject %}{% trans "Confirm withdraw" %} {{ withdraw.amount|floatformat:8 }} - {{ withdraw.account.currency.symbol }} {% trans "for user" %} {{ withdraw.account.user.username }}{% endblock %}
 
 {% block html %}
 	<h2>{% trans "A new withdraw has been requested" %}</h2>
