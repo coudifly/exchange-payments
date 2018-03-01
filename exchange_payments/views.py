@@ -193,14 +193,14 @@ class NewWithdrawView(View):
                     recipient_list=settings.WITHDRAW_APPROVE_EMAILS
                 )
 
-            account.deposit -= withdraw.amount
+            account.deposit -= abs(withdraw.amount)
             account.save()
 
             statement = Statement()
             statement.account = account
             statement.description = 'Withdraw'
             statement.type = Statement.TYPES.withdraw
-            statement.amount = Decimal('0.00') - withdraw.amount
+            statement.amount = withdraw.amount
             statement.save()
 
             return {'status': 'success', 'amount': withdraw.amount}
