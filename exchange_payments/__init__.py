@@ -15,6 +15,7 @@ default_app_config = PACKAGE_NAME + '.apps.Config'
 # Coin Payments configurações
 settings.COINPAYMENTS_PUBLIC_KEY = config('COINPAYMENTS_PUBLIC_KEY', default=None)
 settings.COINPAYMENTS_PRIVATE_KEY = config('COINPAYMENTS_PRIVATE_KEY', default=None)
+settings.COINPAYMENTS_DEPOSIT_WITH_FEE = config('COINPAYMENTS_DEPOSIT_WITH_FEE', default=True, cast=config.boolean)
 
 # Tcoin configurações
 settings.TCOIN_RPC_USERNAME = config('TCOIN_RPC_USERNAME', default=None)

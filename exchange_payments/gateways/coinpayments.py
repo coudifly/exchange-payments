@@ -59,12 +59,16 @@ class Gateway:
 
         # Checa se o deposito e valido
         if ipn_type == 'deposit' and account.currency.symbol.upper() == currency.upper() and status >= 100:
+            # Verifica se e para descontar ou nao o valor do fee de 0.5% da coinpayments
+            if not settings.COINPAYMENTS_DEPOSIT_WITH_FEE:
+                fee = Decimal('0.00')
+
             self.deposit_amount = amount - fee
             return True
 
     def to_withdraw(self, withdraw):
         data = {
-            'amount': abs(withdraw.amount), 
+            'amount': withdraw.amount_with_discount,
             'currency': withdraw.account.currency.symbol,
             'address': withdraw.address
         }

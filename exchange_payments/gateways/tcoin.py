@@ -29,5 +29,5 @@ class Gateway:
         pass
 
     def to_withdraw(self, withdraw):
-        satoshis_amount = 100000000 * abs(withdraw.amount)
-        return rpc_proxy.sendtoaddress(withdraw.address, satoshis_amount, subtractfeefromamount=True)
+        satoshis_amount = 100000000 * withdraw.amount_with_discount
+        return rpc_proxy.sendtoaddress(withdraw.address, satoshis_amount, subtractfeefromamount=settings.TCOIN_SUBTRACT_FEE_FROM_AMOUNT)
