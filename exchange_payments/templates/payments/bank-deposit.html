@@ -32,7 +32,7 @@
                     	<li>{% trans "Dedposit fee is: " %}<strong>{{ deposit_fee_percent }}</strong></li>
                     </ul>
                     <hr>
-                    {% if today_deposits|length < settings.BR_DEPOSIT_DAILY_LIMIT %}
+                    {% if today_deposits|length < BR_DEPOSIT_DAILY_LIMIT %}
                     <form method="POST">
                         {% csrf_token %}
                         {% with WIDGET_ERROR_CLASS='parsley-error' %}
