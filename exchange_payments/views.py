@@ -164,10 +164,13 @@ class NewWithdrawView(View):
             else:
                 withdraw = CryptoWithdraw()
 
+            profit = withdraw_form.cleaned_data['amount'] * (account.currency.withdraw_fee / 100)
+
             withdraw.account = account
             withdraw.deposit = account.deposit
             withdraw.reserved = account.reserved
             withdraw.amount = Decimal('0.00') - withdraw_form.cleaned_data['amount']
+            withdraw.profit = profit
 
             if coin == settings.BRL_CURRENCY_SYMBOL:
                 br_bank_account = request.user.br_bank_account
