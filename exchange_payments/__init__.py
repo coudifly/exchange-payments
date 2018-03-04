@@ -23,6 +23,7 @@ settings.TCOIN_RPC_PASSWORD = config('TCOIN_RPC_PASSWORD', default=None)
 settings.TCOIN_RPC_URL = config('TCOIN_RPC_URL', default=None)
 settings.TCOIN_RPC_PROXY = config('TCOIN_RPC_PROXY', default=None)
 settings.TCOIN_SUBTRACT_FEE_FROM_AMOUNT = config('TCOIN_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
+settings.TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS = config('TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS', default=5, cast=int)
 
 # Lista de gateways de pagamento suportados
 settings.SUPPORTED_PAYMENT_GATEWAYS = [

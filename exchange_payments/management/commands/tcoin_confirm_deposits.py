@@ -51,4 +51,4 @@ class Command(BaseCommand):
 
 					print('Pagando {} para a conta TCOIN do usuario {}'.format(tx['amount'], account.user.username))
 
-			time.sleep(1)
+			time.sleep(settings.TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS)
