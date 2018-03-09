@@ -25,10 +25,15 @@ settings.TCOIN_RPC_PROXY = config('TCOIN_RPC_PROXY', default=None)
 settings.TCOIN_SUBTRACT_FEE_FROM_AMOUNT = config('TCOIN_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
 settings.TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS = config('TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS', default=5, cast=int)
 
+# Bitgo configuracoes
+settings.BITGO_SERVER_URL = config('BITGO_SERVER_URL', default=None)
+settings.BITGO_ACCESS_TOKEN = config('BITGO_ACCESS_TOKEN', default=None)
+
 # Lista de gateways de pagamento suportados
 settings.SUPPORTED_PAYMENT_GATEWAYS = [
 	('coinpayments', 'CoinPayments'),
 	('tcoin', 'Tcoin'),
+	('bitgo', 'BitGo'),
 ]
 
 # Configurações do Real Brasileiro
