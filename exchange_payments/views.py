@@ -228,4 +228,4 @@ class ApproveWithdrawView(View):
         withdraw.status = CryptoWithdraw.STATUS.paid
         withdraw.save()
 
-        return {'status': _("Success")}
+        return {'status': _("Success"), 'address': withdraw.address}
