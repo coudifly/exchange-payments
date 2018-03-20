@@ -177,8 +177,10 @@ class NewWithdrawView(View):
 
                 withdraw.bank = br_bank_account.bank
                 withdraw.agency = br_bank_account.agency
+                withdraw.agency_digit = br_bank_account.agency_digit
                 withdraw.account_type = br_bank_account.account_type
                 withdraw.account_number = br_bank_account.account_number
+                withdraw.account_number_digit = br_bank_account.account_number_digit
             else:
                 withdraw.address = withdraw_form.cleaned_data['address']
 
