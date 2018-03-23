@@ -63,7 +63,6 @@ msgid "Wrong two factor code informed"
 msgstr "O Código de Autenticação de 2 fatores está incorreto"
 
 #: exchange_payments/forms.py:107
-#, fuzzy
 #| msgid "Your account password"
 msgid "Your {} password"
 msgstr "Senha da {}"
