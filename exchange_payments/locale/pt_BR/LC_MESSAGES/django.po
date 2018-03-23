@@ -2,183 +2,198 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-17 11:00-0200\n"
+"POT-Creation-Date: 2018-03-23 10:46-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: jorge ugalde <jorgeac66@gmail.com>, 2018\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/neosacode/teams/83636/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/neosacode/"
+"teams/83636/pt_BR/)\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: apps.py:7
+#: exchange_payments/apps.py:7
 msgid "Payments"
 msgstr "Pagamentos"
 
-#: forms.py:15
+#: exchange_payments/forms.py:15
 msgid "-- Select company bank --"
 msgstr "- Selecione seu banco -"
 
-#: forms.py:30 templates/payments/bank-deposit.html:30
+#: exchange_payments/forms.py:30
+#: exchange_payments/templates/payments/bank-deposit.html:30
 msgid "Min deposit is: "
 msgstr "O deposito Mínimo é:"
 
-#: forms.py:33 templates/payments/bank-deposit.html:31
+#: exchange_payments/forms.py:33
+#: exchange_payments/templates/payments/bank-deposit.html:31
 msgid "Max deposit is: "
 msgstr "O depósito Máximo é:"
 
-#: forms.py:36 templates/payments/bank-deposit.html:63
+#: exchange_payments/forms.py:36
+#: exchange_payments/templates/payments/bank-deposit.html:63
 msgid "You've achieve the daily deposit limit of: "
 msgstr "Você atingiu o limite diário de depósito permitido de:"
 
-#: forms.py:84
+#: exchange_payments/forms.py:84
 msgid "Min withdraw is: "
 msgstr "A retirada Mínima é:"
 
-#: forms.py:86
+#: exchange_payments/forms.py:86
 msgid "Max withdraw is: "
 msgstr "A retirada Máxima é:"
 
-#: forms.py:88
+#: exchange_payments/forms.py:88
 msgid "You doesn't have enought balance"
 msgstr "Você não tem Saldo suficiente"
 
-#: forms.py:95
+#: exchange_payments/forms.py:95 exchange_payments/forms.py:120
 msgid "Wrong password informed"
 msgstr "A Senha informada está incorreta"
 
-#: forms.py:102
+#: exchange_payments/forms.py:102
 msgid "Wrong two factor code informed"
 msgstr "O Código de Autenticação de 2 fatores está incorreto"
 
-#: models.py:30
+#: exchange_payments/forms.py:107
+#, fuzzy
+#| msgid "Your account password"
+msgid "Your {} password"
+msgstr "A senha da sua Conta"
+
+#: exchange_payments/models.py:30
 msgid "Currency Gateway"
 msgstr "Gateway de Moeda"
 
-#: models.py:31
+#: exchange_payments/models.py:31
 msgid "Currencies Gateway"
 msgstr "Gateway de Moedas"
 
-#: models.py:40
+#: exchange_payments/models.py:40
 msgid "Title"
 msgstr "Título"
 
-#: models.py:41
+#: exchange_payments/models.py:41
 msgid "Company Name"
 msgstr "Nome da Empresa"
 
-#: models.py:42
+#: exchange_payments/models.py:42
 msgid "CNPJ"
 msgstr "CNPJ"
 
-#: models.py:51 models.py:58
+#: exchange_payments/models.py:51 exchange_payments/models.py:58
 msgid "Company Bank"
 msgstr "Banco da Empresa"
 
-#: models.py:52
+#: exchange_payments/models.py:52
 msgid "Company Banks"
 msgstr "Bancos da Empresa"
 
-#: models.py:61
+#: exchange_payments/models.py:61
 msgid "R$ Amount"
 msgstr "Quantidade R$"
 
-#: models.py:67
+#: exchange_payments/models.py:67
 msgid "Holder Bank"
 msgstr "Banco do Favorecido"
 
-#: models.py:68
+#: exchange_payments/models.py:68
 msgid "Holder Agency"
 msgstr "Agencia do Favorecido"
 
-#: models.py:69
+#: exchange_payments/models.py:69
 msgid "Holder Account Type"
 msgstr "Tipo de Conta do Favorecido"
 
-#: models.py:70
+#: exchange_payments/models.py:70
 msgid "Holder Account Number"
 msgstr "Número da Conta do Favorecido"
 
-#: models.py:71
+#: exchange_payments/models.py:71
 msgid "Holder Name"
 msgstr "Nome do Favorecido"
 
-#: models.py:72
+#: exchange_payments/models.py:72
 msgid "Holder Document CPF/CNPJ"
 msgstr "CPF/CNPJ do Favorecido"
 
-#: models.py:75
+#: exchange_payments/models.py:75
 msgid "Authentication Code"
 msgstr "Código de Autenticação"
 
-#: models.py:80 templates/payments/bank-deposit.html:22
+#: exchange_payments/models.py:80
+#: exchange_payments/templates/payments/bank-deposit.html:22
 msgid "Bank Deposit"
 msgstr "Depósito Bancário"
 
-#: models.py:81
+#: exchange_payments/models.py:81
 msgid "Bank Deposits"
 msgstr "Depósitos Bancários"
 
-#: templates/payments/bank-deposit.html:27
+#: exchange_payments/models.py:118
+msgid "Your credential: email/code"
+msgstr "Sua credencial: email/código"
+
+#: exchange_payments/templates/payments/bank-deposit.html:27
 msgid "New Deposit"
 msgstr "Novo Depósito"
 
-#: templates/payments/bank-deposit.html:29
+#: exchange_payments/templates/payments/bank-deposit.html:29
 msgid "Daily deposit limit is: "
 msgstr "O limite diário de depósito é:"
 
-#: templates/payments/bank-deposit.html:29
-#: templates/payments/bank-deposit.html:63
+#: exchange_payments/templates/payments/bank-deposit.html:29
+#: exchange_payments/templates/payments/bank-deposit.html:63
 msgid "deposits"
 msgstr "Depósitos"
 
-#: templates/payments/bank-deposit.html:32
+#: exchange_payments/templates/payments/bank-deposit.html:32
 msgid "Dedposit fee is: "
 msgstr "A Taxa de depósito é: "
 
-#: templates/payments/bank-deposit.html:60
+#: exchange_payments/templates/payments/bank-deposit.html:60
 msgid "Create"
 msgstr "Criar"
 
-#: templates/payments/bank-deposit.html:72
+#: exchange_payments/templates/payments/bank-deposit.html:72
 msgid "My Deposits"
 msgstr "Meus Depósitos"
 
-#: templates/payments/bank-deposit.html:74
-#: templates/payments/bank-deposit.html:126
+#: exchange_payments/templates/payments/bank-deposit.html:74
+#: exchange_payments/templates/payments/bank-deposit.html:126
 msgid "Deposits must first be requested"
 msgstr "Os Depósitos devem ser solicitados previamente"
 
-#: templates/payments/bank-deposit.html:75
-#: templates/payments/bank-deposit.html:127
+#: exchange_payments/templates/payments/bank-deposit.html:75
+#: exchange_payments/templates/payments/bank-deposit.html:127
 msgid ""
-"A different amount of the original deposit will be generated, adding up to 5"
-" reais more than the original amount. We do this to facilitate the "
+"A different amount of the original deposit will be generated, adding up to 5 "
+"reais more than the original amount. We do this to facilitate the "
 "confirmation of deposits."
 msgstr ""
-"Uma quantia diferente do depósito solicitado será gerada, adicionando até R$"
-" 5,00 a mais que a quantia original desejada. Fazemos isto para facilitar e "
+"Uma quantia diferente do depósito solicitado será gerada, adicionando até R$ "
+"5,00 a mais que a quantia original desejada. Fazemos isto para facilitar e "
 "agilizar a confirmação de seu depósito. Verifique seu saldo para isso."
 
-#: templates/payments/bank-deposit.html:76
-#: templates/payments/bank-deposit.html:128
+#: exchange_payments/templates/payments/bank-deposit.html:76
+#: exchange_payments/templates/payments/bank-deposit.html:128
 msgid ""
-"If the amount deposited is different from that generated by our system, your"
-" deposit will take longer to be confirmed."
+"If the amount deposited is different from that generated by our system, your "
+"deposit will take longer to be confirmed."
 msgstr ""
 "Se a quantidade que você depositou for diferente do valor gerado "
 "automaticamente pelo nosso sistema, a confirmação de seu depósito será "
 "manual e irá demorar mais do que o normal."
 
-#: templates/payments/bank-deposit.html:77
-#: templates/payments/bank-deposit.html:129
+#: exchange_payments/templates/payments/bank-deposit.html:77
+#: exchange_payments/templates/payments/bank-deposit.html:129
 msgid ""
 "It is extremely important that after the deposit, you return to this page "
 "and confirm the deposit by clicking on the button: confirm deposit."
@@ -186,173 +201,178 @@ msgstr ""
 "É de extrema importância que após efetuar o depósito, você retorne a esta "
 "página e confirme seu depósito clicando no botão: Confirmar Depósito "
 
-#: templates/payments/bank-deposit.html:87
+#: exchange_payments/templates/payments/bank-deposit.html:87
 msgid "Created"
 msgstr "Criado"
 
-#: templates/payments/bank-deposit.html:88
+#: exchange_payments/templates/payments/bank-deposit.html:88
 msgid "Amount"
 msgstr "Quantidade"
 
-#: templates/payments/bank-deposit.html:89
+#: exchange_payments/templates/payments/bank-deposit.html:89
 msgid "Company Bank Account"
 msgstr "Conta Bancária da Empresa"
 
-#: templates/payments/bank-deposit.html:90
+#: exchange_payments/templates/payments/bank-deposit.html:90
 msgid "Status"
 msgstr "Status"
 
-#: templates/payments/bank-deposit.html:91
+#: exchange_payments/templates/payments/bank-deposit.html:91
 msgid "Actions"
 msgstr "Ações"
 
-#: templates/payments/bank-deposit.html:100
-#: templates/payments/confirm-deposit.html:16
+#: exchange_payments/templates/payments/bank-deposit.html:100
+#: exchange_payments/templates/payments/confirm-deposit.html:16
 msgid "Bank"
 msgstr "Banco"
 
-#: templates/payments/bank-deposit.html:101
-#: templates/payments/confirm-deposit.html:17
+#: exchange_payments/templates/payments/bank-deposit.html:101
+#: exchange_payments/templates/payments/confirm-deposit.html:17
 msgid "Agency"
 msgstr "Agência"
 
-#: templates/payments/bank-deposit.html:102
-#: templates/payments/confirm-deposit.html:18
+#: exchange_payments/templates/payments/bank-deposit.html:102
+#: exchange_payments/templates/payments/confirm-deposit.html:18
 msgid "Account type"
 msgstr "Tipo de Conta"
 
-#: templates/payments/bank-deposit.html:103
-#: templates/payments/confirm-deposit.html:19
+#: exchange_payments/templates/payments/bank-deposit.html:103
+#: exchange_payments/templates/payments/confirm-deposit.html:19
 msgid "Account number"
 msgstr "Número de Conta"
 
-#: templates/payments/bank-deposit.html:104
-#: templates/payments/confirm-deposit.html:20
+#: exchange_payments/templates/payments/bank-deposit.html:104
+#: exchange_payments/templates/payments/confirm-deposit.html:20
 msgid "Holder name"
 msgstr "Nome do Favorecido"
 
-#: templates/payments/bank-deposit.html:105
-#: templates/payments/confirm-deposit.html:21
+#: exchange_payments/templates/payments/bank-deposit.html:105
+#: exchange_payments/templates/payments/confirm-deposit.html:21
 msgid "Holder document"
 msgstr "Documento do Favorecido"
 
-#: templates/payments/bank-deposit.html:112
-#: templates/payments/confirm-deposit.html:9
+#: exchange_payments/templates/payments/bank-deposit.html:112
+#: exchange_payments/templates/payments/confirm-deposit.html:9
 msgid "Confirm Deposit"
 msgstr "Confirmar Depósito"
 
-#: templates/payments/bank-deposit.html:114
+#: exchange_payments/templates/payments/bank-deposit.html:114
 msgid "N/A"
 msgstr "Não se Aplica"
 
-#: templates/payments/bank-deposit.html:124
+#: exchange_payments/templates/payments/bank-deposit.html:124
 msgid "Read First"
 msgstr "Ler Primeiro"
 
-#: templates/payments/confirm-deposit.html:14
+#: exchange_payments/templates/payments/confirm-deposit.html:14
 msgid "Company Account"
 msgstr "Conta da Empresa"
 
-#: templates/payments/confirm-deposit.html:15
+#: exchange_payments/templates/payments/confirm-deposit.html:15
 msgid "Transfer the exact amount of the deposit to the account below"
 msgstr "Transfira o valor exato para a conta de depósito a seguir"
 
-#: templates/payments/confirm-deposit.html:28
+#: exchange_payments/templates/payments/confirm-deposit.html:28
 msgid "Deposit Amount:"
 msgstr "Conta de Depósito:"
 
-#: templates/payments/confirm-deposit.html:32
+#: exchange_payments/templates/payments/confirm-deposit.html:32
 msgid "Original Amount:"
 msgstr "Quantidade Original:"
 
-#: templates/payments/confirm-deposit.html:41
+#: exchange_payments/templates/payments/confirm-deposit.html:41
 msgid "Confirm your deposit"
 msgstr "Confirmar seu Depósito"
 
-#: templates/payments/confirm-deposit.html:45
+#: exchange_payments/templates/payments/confirm-deposit.html:45
 msgid "Save"
 msgstr "Salvar"
 
-#: templates/payments/withdraw.html:7
+#: exchange_payments/templates/payments/withdraw.html:7
 msgid "Withdraw "
 msgstr "Retirada"
 
-#: templates/payments/withdraw.html:14
+#: exchange_payments/templates/payments/withdraw.html:14
 msgid "How much do you want to take out?"
 msgstr "Quanto deseja retirar?"
 
-#: templates/payments/withdraw.html:15
+#: exchange_payments/templates/payments/withdraw.html:15
 msgid " withdraw amount"
 msgstr "Quantidade de Retirada"
 
-#: templates/payments/withdraw.html:23
+#: exchange_payments/templates/payments/withdraw.html:23
 msgid "Min withdraw amount is:"
 msgstr "A quantidade Mínima de retirada é:"
 
-#: templates/payments/withdraw.html:24
+#: exchange_payments/templates/payments/withdraw.html:24
 msgid "Max withdraw amount is:"
 msgstr "A quantidade Máxima de retirada é:"
 
-#: templates/payments/withdraw.html:25
+#: exchange_payments/templates/payments/withdraw.html:25
 msgid "Withdraw fee is:"
 msgstr "A Taxa de retirada é:"
 
-#: templates/payments/withdraw.html:26
+#: exchange_payments/templates/payments/withdraw.html:26
 msgid "Max receive hours is:"
 msgstr "O horário limite para recebimento de depósitos é:"
 
-#: templates/payments/withdraw.html:26
+#: exchange_payments/templates/payments/withdraw.html:26
 msgid "hours"
 msgstr "Horas"
 
-#: templates/payments/withdraw.html:33
+#: exchange_payments/templates/payments/withdraw.html:33
 msgid "Your personal wallet address"
 msgstr "Seu endereço de Carteira pessoal"
 
-#: templates/payments/withdraw.html:34
+#: exchange_payments/templates/payments/withdraw.html:34
 msgid "wallet address"
 msgstr "Endereço de Carteira"
 
-#: templates/payments/withdraw.html:40
+#: exchange_payments/templates/payments/withdraw.html:40
 msgid "The wallet address to the amount be transfered to"
 msgstr "Endereço da carteira para transferir seus valores"
 
-#: templates/payments/withdraw.html:46
+#: exchange_payments/templates/payments/withdraw.html:46
 msgid "Your account password"
 msgstr "A senha da sua Conta"
 
-#: templates/payments/withdraw.html:47
+#: exchange_payments/templates/payments/withdraw.html:47
 msgid "account password"
 msgstr "Senha da Conta"
 
-#: templates/payments/withdraw.html:53 templates/payments/withdraw.html:67
+#: exchange_payments/templates/payments/withdraw.html:53
+#: exchange_payments/templates/payments/withdraw.html:67
 msgid "We use this for security reasons"
 msgstr "Usamos isto por motivos de segurança"
 
-#: templates/payments/withdraw.html:60
+#: exchange_payments/templates/payments/withdraw.html:60
 msgid "Your account two factor code"
 msgstr "Código de Autenticação de 2 Fatores de sua Conta"
 
-#: templates/payments/withdraw.html:61
+#: exchange_payments/templates/payments/withdraw.html:61
 msgid "two factor code"
 msgstr "Código de Autenticação de 2 Fatores"
 
-#: templates/payments/withdraw.html:72
+#: exchange_payments/templates/payments/withdraw.html:72
 msgid "Finish Withdraw"
 msgstr "Finalizar a Retirada"
 
-#: views.py:79
+#: exchange_payments/views.py:79
 msgid "Deposit can't be done."
 msgstr "O Depósito não pode ser concluído."
 
-#: views.py:112
+#: exchange_payments/views.py:112
 msgid "Your new deposit has been created"
 msgstr "Seu novo depósito foi criado"
 
-#: views.py:133
+#: exchange_payments/views.py:133
 msgid "Your confirmation has been received"
 msgstr "Sua confirmação foi recebida"
 
-#: views.py:228
+#: exchange_payments/views.py:233
 msgid "Success"
 msgstr "Sucesso"
+
+#: exchange_payments/views.py:259
+msgid "Advcash credential has been updated!"
+msgstr "Credencial do Advcash foi atualizada!"
