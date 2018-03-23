@@ -111,6 +111,17 @@ class BankDeposits(TimeStampedModel, BaseModel):
             return 'info'
 
 
+class Credentials(TimeStampedModel, BaseModel):
+    PROVIDERS = Choices(*[i[0] for i in settings.SUPPORTED_PAYMENT_GATEWAYS])
+
+    provider = models.CharField(max_length=20, choices=PROVIDERS)
+    code = models.CharField(max_length=255, verbose_name=_("Your credential: email/code"))
+    user = models.ForeignKey('exchange_core.Users', null=True, related_name='credentials', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (('provider', 'user'),)
+
+
 @admin.register(CurrencyGateway)
 class CurrencyGatewayAdmin(admin.ModelAdmin):
     list_display = ('currency', 'symbol', 'gateway')

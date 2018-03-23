@@ -34,6 +34,7 @@ settings.SUPPORTED_PAYMENT_GATEWAYS = [
 	('coinpayments', 'CoinPayments'),
 	('tcoin', 'Tcoin'),
 	('bitgo', 'BitGo'),
+	('advcash', 'Advcash'),
 ]
 
 # Configurações do Real Brasileiro

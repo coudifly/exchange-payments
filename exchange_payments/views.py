@@ -18,9 +18,9 @@ from simplecrypt import encrypt, decrypt
 
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
-from exchange_payments.models import CurrencyGateway, BankDeposits
+from exchange_payments.models import CurrencyGateway, BankDeposits, Credentials
 from exchange_payments.gateways.coinpayments import Gateway
-from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
+from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm, CredentialForm
 from templated_email import send_templated_mail
 
 
@@ -231,3 +231,30 @@ class ApproveWithdrawView(View):
         withdraw.save()
 
         return {'status': _("Success"), 'address': withdraw.address}
+
+
+@method_decorator([login_required], name='dispatch')
+class CredentialsView(MultiFormView):
+    template_name = 'payments/credentials.html'
+
+    forms = {
+        'advcash': CredentialForm,
+    }
+
+    pass_user = [
+        'advcash'
+    ]
+
+    def get_advcash_instance(self):
+        credentials = Credentials.objects.filter(user=self.request.user, provider=Credentials.PROVIDERS.advcash)
+        if credentials.exists():
+            return credentials.first()
+
+    def advcash_form_valid(self, form):
+        credential = form.save(commit=False)
+        credential.user = self.request.user
+        credential.provider = Credentials.PROVIDERS.advcash
+        credential.save()
+
+        messages.success(self.request, _('Advcash credential has been updated!'))
+        return redirect(reverse('payments>credentials'))

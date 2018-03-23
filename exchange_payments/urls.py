@@ -10,4 +10,5 @@ urlpatterns = [
 	path('payments/approve-withdraw/<withdraw_hash>/', views.ApproveWithdrawView.as_view(), name='payments>approve-withdraw'),
 	path('payments/confirm-deposit/<bank_deposit_pk>/', views.ConfirmDepositView.as_view(), name='payments>confirm-deposit'),
 	path('payments/process-webhook/<gateway>/<account_pk>/', views.ProcessWebhookView.as_view(), name='payments>proccess-webhook'),
+	path('payments/credentials/', views.CredentialsView.as_view(), name='payments>credentials'),
 ]
