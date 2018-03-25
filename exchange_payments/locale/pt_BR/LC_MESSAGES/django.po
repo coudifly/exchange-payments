@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-23 10:46-0300\n"
+"POT-Creation-Date: 2018-03-25 16:53-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: jorge ugalde <jorgeac66@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/neosacode/"
@@ -63,82 +63,151 @@ msgid "Wrong two factor code informed"
 msgstr "O Código de Autenticação de 2 fatores está incorreto"
 
 #: exchange_payments/forms.py:107
-#| msgid "Your account password"
 msgid "Your {} password"
 msgstr "Senha da {}"
 
-#: exchange_payments/models.py:30
-msgid "Currency Gateway"
+#: exchange_payments/models.py:22
+msgid "Currency"
 msgstr "Gateway de Moeda"
 
-#: exchange_payments/models.py:31
-msgid "Currencies Gateway"
-msgstr "Gateway de Moedas"
+#: exchange_payments/models.py:23
+msgid "Gateway"
+msgstr "Gateway de Moeda"
 
-#: exchange_payments/models.py:40
+#: exchange_payments/models.py:29
+msgid "Currency gateway"
+msgstr "Gateway de pagamento"
+
+#: exchange_payments/models.py:30
+msgid "Currencies gateway"
+msgstr "Gateways de pagamento"
+
+#: exchange_payments/models.py:35
+#: exchange_payments/templates/payments/bank-deposit.html:100
+#: exchange_payments/templates/payments/confirm-deposit.html:16
+msgid "Bank"
+msgstr "Banco"
+
+#: exchange_payments/models.py:36
+#: exchange_payments/templates/payments/bank-deposit.html:101
+#: exchange_payments/templates/payments/confirm-deposit.html:17
+msgid "Agency"
+msgstr "Agência"
+
+#: exchange_payments/models.py:37
+#: exchange_payments/templates/payments/bank-deposit.html:102
+#: exchange_payments/templates/payments/confirm-deposit.html:18
+msgid "Account type"
+msgstr "Tipo de Conta"
+
+#: exchange_payments/models.py:38
+#: exchange_payments/templates/payments/bank-deposit.html:103
+#: exchange_payments/templates/payments/confirm-deposit.html:19
+msgid "Account number"
+msgstr "Número de Conta"
+
+#: exchange_payments/models.py:39
 msgid "Title"
 msgstr "Título"
 
-#: exchange_payments/models.py:41
+#: exchange_payments/models.py:40
 msgid "Company Name"
 msgstr "Nome da Empresa"
 
-#: exchange_payments/models.py:42
+#: exchange_payments/models.py:41
 msgid "CNPJ"
 msgstr "CNPJ"
 
-#: exchange_payments/models.py:51 exchange_payments/models.py:58
-msgid "Company Bank"
-msgstr "Banco da Empresa"
+#: exchange_payments/models.py:43
+msgid "Is active"
+msgstr "Está ativo"
 
-#: exchange_payments/models.py:52
-msgid "Company Banks"
-msgstr "Bancos da Empresa"
+#: exchange_payments/models.py:50 exchange_payments/models.py:57
+msgid "Company bank"
+msgstr "Banco da empresa"
 
-#: exchange_payments/models.py:61
+#: exchange_payments/models.py:51
+msgid "Company banks"
+msgstr "Bancos da empresa"
+
+#: exchange_payments/models.py:58 exchange_payments/models.py:118
+msgid "User"
+msgstr "Usuário"
+
+#: exchange_payments/models.py:60
 msgid "R$ Amount"
 msgstr "Quantidade R$"
 
+#: exchange_payments/models.py:62
+msgid "Range amount"
+msgstr "Quantidade R$"
+
+#: exchange_payments/models.py:64
+msgid "Credited amount"
+msgstr "Quantidade de Retirada"
+
+#: exchange_payments/models.py:66
+msgid "Holder bank"
+msgstr "Banco do titular"
+
 #: exchange_payments/models.py:67
-msgid "Holder Bank"
-msgstr "Banco do Favorecido"
+msgid "Holder agency"
+msgstr "Agencia do titular"
 
 #: exchange_payments/models.py:68
-msgid "Holder Agency"
-msgstr "Agencia do Favorecido"
+msgid "Holder account type"
+msgstr "Tipo de conta do titular"
 
 #: exchange_payments/models.py:69
-msgid "Holder Account Type"
-msgstr "Tipo de Conta do Favorecido"
+msgid "Holder account number"
+msgstr "Número da conta do titular"
 
 #: exchange_payments/models.py:70
-msgid "Holder Account Number"
-msgstr "Número da Conta do Favorecido"
+#: exchange_payments/templates/payments/bank-deposit.html:104
+#: exchange_payments/templates/payments/confirm-deposit.html:20
+msgid "Holder name"
+msgstr "Nome do titular"
 
 #: exchange_payments/models.py:71
-msgid "Holder Name"
-msgstr "Nome do Favorecido"
+msgid "Holder document CPF/CNPJ"
+msgstr "CPF/CNPJ do titular"
 
-#: exchange_payments/models.py:72
-msgid "Holder Document CPF/CNPJ"
-msgstr "CPF/CNPJ do Favorecido"
+#: exchange_payments/models.py:74
+msgid "Authentication code"
+msgstr "Código de autenticação"
 
-#: exchange_payments/models.py:75
-msgid "Authentication Code"
-msgstr "Código de Autenticação"
+#: exchange_payments/models.py:76
+#: exchange_payments/templates/payments/bank-deposit.html:90
+msgid "Status"
+msgstr "Status"
+
+#: exchange_payments/models.py:79
+msgid "Bank deposit"
+msgstr "Depósito Bancário"
 
 #: exchange_payments/models.py:80
+msgid "Bank deposits"
+msgstr "Depósitos bancários"
+
+#: exchange_payments/models.py:116
+msgid "Provider"
+msgstr "Fornecedor"
+
+#: exchange_payments/models.py:117
+msgid "Your credential: email/code"
+msgstr "Sua credencial: email/código"
+
+#: exchange_payments/models.py:122
+msgid "Credential"
+msgstr "Credencial"
+
+#: exchange_payments/models.py:123
+msgid "Credentials"
+msgstr "Credenciais"
+
 #: exchange_payments/templates/payments/bank-deposit.html:22
 msgid "Bank Deposit"
 msgstr "Depósito Bancário"
-
-#: exchange_payments/models.py:81
-msgid "Bank Deposits"
-msgstr "Depósitos Bancários"
-
-#: exchange_payments/models.py:118
-msgid "Your credential: email/code"
-msgstr "Sua credencial: email/código"
 
 #: exchange_payments/templates/payments/bank-deposit.html:27
 msgid "New Deposit"
@@ -212,43 +281,14 @@ msgstr "Quantidade"
 msgid "Company Bank Account"
 msgstr "Conta Bancária da Empresa"
 
-#: exchange_payments/templates/payments/bank-deposit.html:90
-msgid "Status"
-msgstr "Status"
-
 #: exchange_payments/templates/payments/bank-deposit.html:91
 msgid "Actions"
 msgstr "Ações"
 
-#: exchange_payments/templates/payments/bank-deposit.html:100
-#: exchange_payments/templates/payments/confirm-deposit.html:16
-msgid "Bank"
-msgstr "Banco"
-
-#: exchange_payments/templates/payments/bank-deposit.html:101
-#: exchange_payments/templates/payments/confirm-deposit.html:17
-msgid "Agency"
-msgstr "Agência"
-
-#: exchange_payments/templates/payments/bank-deposit.html:102
-#: exchange_payments/templates/payments/confirm-deposit.html:18
-msgid "Account type"
-msgstr "Tipo de Conta"
-
-#: exchange_payments/templates/payments/bank-deposit.html:103
-#: exchange_payments/templates/payments/confirm-deposit.html:19
-msgid "Account number"
-msgstr "Número de Conta"
-
-#: exchange_payments/templates/payments/bank-deposit.html:104
-#: exchange_payments/templates/payments/confirm-deposit.html:20
-msgid "Holder name"
-msgstr "Nome do Favorecido"
-
 #: exchange_payments/templates/payments/bank-deposit.html:105
 #: exchange_payments/templates/payments/confirm-deposit.html:21
 msgid "Holder document"
-msgstr "Documento do Favorecido"
+msgstr "Documento do titular"
 
 #: exchange_payments/templates/payments/bank-deposit.html:112
 #: exchange_payments/templates/payments/confirm-deposit.html:9

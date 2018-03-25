@@ -3,7 +3,6 @@ from decimal import Decimal
 
 from django.db import models
 from django.conf import settings
-from django.contrib import admin
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from exchange_core.models import BaseModel
@@ -20,65 +19,65 @@ from exchange_core.choices import BR_BANKS_CHOICES, BR_ACCOUNT_TYPES_CHOICES
 
 # Diz para o moeda X que gateway ela deverá usar
 class CurrencyGateway(TimeStampedModel, BaseModel):
-    currency = models.OneToOneField('exchange_core.Currencies', related_name='gateway', on_delete=models.CASCADE)
-    gateway = models.CharField(max_length=50, choices=settings.SUPPORTED_PAYMENT_GATEWAYS)
+    currency = models.OneToOneField('exchange_core.Currencies', related_name='gateway', verbose_name=_("Currency"), on_delete=models.CASCADE)
+    gateway = models.CharField(max_length=50, choices=settings.SUPPORTED_PAYMENT_GATEWAYS, verbose_name=_("Gateway"))
 
     def __str__(self):
         return self.currency.name
 
     class Meta:
-        verbose_name = _("Currency Gateway")
-        verbose_name_plural = _("Currencies Gateway")
+        verbose_name = _("Currency gateway")
+        verbose_name_plural = _("Currencies gateway")
 
 
 # Armazena os bancos que serão usados para os depósitos feitos em REAL
 class CompanyBanks(TimeStampedModel, BaseModel):
-    bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES)
-    agency = models.CharField(max_length=10)
-    account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES)
-    account_number = models.CharField(max_length=20)
+    bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Bank"))
+    agency = models.CharField(max_length=10, verbose_name=_("Agency"))
+    account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Account type"))
+    account_number = models.CharField(max_length=20, verbose_name=_("Account number"))
     title = models.CharField(max_length=100, verbose_name=_("Title"), null=True)
     name = models.CharField(max_length=100, verbose_name=_("Company Name"))
     document = models.CharField(max_length=20, verbose_name=_("CNPJ"))
     # Caso o banco entre em desuso, o registro não deverá ser apagado, mas sim inativado através da flag is_active
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, verbose_name=_("Is active"))
 
     def __str__(self):
         return self.title or ''
 
 
     class Meta:
-        verbose_name = _("Company Bank")
-        verbose_name_plural = _("Company Banks")
+        verbose_name = _("Company bank")
+        verbose_name_plural = _("Company banks")
 
 
 class BankDeposits(TimeStampedModel, BaseModel):
     STATUS = Choices('pending', 'confirmed', 'deposited', 'expired')
 
-    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("Company Bank"))
-    user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE)
+    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("Company bank"))
+    user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("User"))
     # Valor original do depósito
     amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("R$ Amount"))
     # O range_amount varia de acordo com o RANGE, se o range estiver desabilitado, range_amount será igual a 0
-    range_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'))
+    range_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("Range amount"))
     # Armazena o valor liquido do depósito, que é o valor do amount - o valor da taxa de depósito
-    credited_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'))
+    credited_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("Credited amount"))
     
-    holder_bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Holder Bank"), null=True, blank=True)
-    holder_agency = models.CharField(max_length=10, verbose_name=_("Holder Agency"), null=True, blank=True)
-    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Holder Account Type"), null=True, blank=True)
-    holder_account_number = models.CharField(max_length=20, verbose_name=_("Holder Account Number"), null=True, blank=True)
-    holder_name = models.CharField(max_length=100, verbose_name=_("Holder Name"), null=True, blank=True)
-    holder_document = models.CharField(max_length=20, verbose_name=_("Holder Document CPF/CNPJ"), null=True, blank=True)
+    holder_bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Holder bank"), null=True, blank=True)
+    holder_agency = models.CharField(max_length=10, verbose_name=_("Holder agency"), null=True, blank=True)
+    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Holder account type"), null=True, blank=True)
+    holder_account_number = models.CharField(max_length=20, verbose_name=_("Holder account number"), null=True, blank=True)
+    holder_name = models.CharField(max_length=100, verbose_name=_("Holder name"), null=True, blank=True)
+    holder_document = models.CharField(max_length=20, verbose_name=_("Holder document CPF/CNPJ"), null=True, blank=True)
 
     receipt = models.ImageField(null=True, blank=True)
-    authentication_code = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Authentication Code"))
+    authentication_code = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Authentication code"))
 
-    status = models.CharField(max_length=20,    default=STATUS.pending, choices=STATUS)
+    status = models.CharField(max_length=20, verbose_name=_("Status"), default=STATUS.pending, choices=STATUS)
 
     class Meta:
-        verbose_name = _("Bank Deposit")
-        verbose_name_plural = _("Bank Deposits")
+        verbose_name = _("Bank deposit")
+        verbose_name_plural = _("Bank deposits")
 
     @classmethod
     def gen_range_amount(cls, amount, tries=0):
@@ -114,30 +113,11 @@ class BankDeposits(TimeStampedModel, BaseModel):
 class Credentials(TimeStampedModel, BaseModel):
     PROVIDERS = Choices(*[i[0] for i in settings.SUPPORTED_PAYMENT_GATEWAYS])
 
-    provider = models.CharField(max_length=20, choices=PROVIDERS)
+    provider = models.CharField(max_length=20, choices=PROVIDERS, verbose_name=_("Provider"))
     code = models.CharField(max_length=255, verbose_name=_("Your credential: email/code"))
-    user = models.ForeignKey('exchange_core.Users', null=True, related_name='credentials', on_delete=models.CASCADE)
+    user = models.ForeignKey('exchange_core.Users', null=True, related_name='credentials', verbose_name=_("User"), on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('provider', 'user'),)
-
-
-@admin.register(CurrencyGateway)
-class CurrencyGatewayAdmin(admin.ModelAdmin):
-    list_display = ('currency', 'symbol', 'gateway')
-
-    def symbol(self, o):
-        return o.currency.symbol
-
-    def has_delete_permission(self, *args, **kwargs):
-        return False
-
-
-@admin.register(CompanyBanks)
-class CompanyBanksAdmin(admin.ModelAdmin):
-    list_display = ('name', 'bank', 'agency', 'account_type', 'account_number', 'document', 'is_active')
-
-
-@admin.register(BankDeposits)
-class BankDepositsAdmin(admin.ModelAdmin):
-    list_display = ('company_bank', 'amount', 'range_amount', 'receipt', 'authentication_code')
+        verbose_name = _("Credential")
+        verbose_name_plural = _("Credentials")
