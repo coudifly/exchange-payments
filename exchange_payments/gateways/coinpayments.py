@@ -73,8 +73,4 @@ class Gateway:
             'address': withdraw.address
         }
         withdraw_response = post('create_withdrawal', data=data)
-
-        if 'error' in withdraw_response and withdraw_response['error']:
-            raise Exception(withdraw_response['error'])
-
         return withdraw_response['result']['id']
