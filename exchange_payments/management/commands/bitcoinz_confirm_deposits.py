@@ -6,7 +6,7 @@ from django.db import transaction
 from django.conf import settings
 
 from exchange_core.models import Accounts, Statement, Currencies
-from exchange_payments.gateways.tcoin import rpc_proxy
+from exchange_payments.gateways.bitcoinz import rpc_proxy
 
 
 class Command(BaseCommand):
