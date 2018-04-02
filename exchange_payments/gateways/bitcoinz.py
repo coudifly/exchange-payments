@@ -9,11 +9,6 @@ RPC_PASSWORD = settings.BITCOINZ_RPC_PASSWORD
 RPC_URL = settings.BITCOINZ_RPC_URL
 RPC_PROXY = settings.BITCOINZ_RPC_PROXY
 
-print(RPC_USERNAME)
-print(RPC_PASSWORD)
-print(RPC_URL)
-print(RPC_PROXY)
-
 rpc_proxy = Proxy(service_url=RPC_URL, rpc_username=RPC_USERNAME, rpc_password=RPC_PASSWORD, proxy=RPC_PROXY)
 
 
