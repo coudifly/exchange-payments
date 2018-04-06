@@ -18,8 +18,11 @@ class Gateway:
     def create_transaction(self, buyer_email, amount, currency='BTC', currency1='BTC', currency2='BTC'):
         pass
 
-    def get_transactions(self):
-        pass
+    def get_wallets(self):
+        return create_request('GET', '/wallet')
+
+    def get_transactions(self, wallet):
+        return create_request('GET', '/wallet/{}/tx'.format(wallet))
 
     def get_transaction(self, transaction_id):
         pass
