@@ -33,6 +33,14 @@ settings.BITCOINZ_RPC_PROXY = config('BITCOINZ_RPC_PROXY', default=None)
 settings.BITCOINZ_SUBTRACT_FEE_FROM_AMOUNT = config('BITCOINZ_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
 settings.BITCOINZ_CONFIRM_PAYMENTS_WAIT_SECONDS = config('BITCOINZ_CONFIRM_PAYMENTS_WAIT_SECONDS', default=5, cast=int)
 
+# Bitcoin configurações
+settings.BITCOIN_RPC_USERNAME = config('BITCOIN_RPC_USERNAME', default=None)
+settings.BITCOIN_RPC_PASSWORD = config('BITCOIN_RPC_PASSWORD', default=None)
+settings.BITCOIN_RPC_URL = config('BITCOIN_RPC_URL', default=None)
+settings.BITCOIN_RPC_PROXY = config('BITCOIN_RPC_PROXY', default=None)
+settings.BITCOIN_SUBTRACT_FEE_FROM_AMOUNT = config('BITCOIN_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
+settings.BITCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS = config('BITCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS', default=5, cast=int)
+
 # Bitgo configuracoes
 settings.BITGO_SERVER_URL = config('BITGO_SERVER_URL', default=None)
 settings.BITGO_ACCESS_TOKEN = config('BITGO_ACCESS_TOKEN', default=None)
@@ -41,6 +49,7 @@ settings.BITGO_ACCESS_TOKEN = config('BITGO_ACCESS_TOKEN', default=None)
 settings.SUPPORTED_PAYMENT_GATEWAYS = [
 	('coinpayments', 'CoinPayments'),
 	('tcoin', 'Tcoin'),
+	('bitcoin', 'Bitcoin'),
 	('bitcoinz', 'Bitcoin Z'),
 	('bitgo', 'BitGo'),
 	('advcash', 'Advcash'),
