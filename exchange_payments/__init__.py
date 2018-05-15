@@ -59,6 +59,7 @@ settings.SUPPORTED_PAYMENT_GATEWAYS = [
 settings.BRL_CURRENCY_SYMBOL = config('BRL_CURRENCY_SYMBOL', default='BRL')
 settings.TCOIN_CURRENCY_SYMBOL = config('TCOIN_CURRENCY_SYMBOL', default='TCN')
 settings.BITCOINZ_CURRENCY_SYMBOL = config('BITCOINZ_CURRENCY_SYMBOL', default='BTCZ')
+settings.BITCOIN_CURRENCY_SYMBOL = config('BITCOIN_CURRENCY_SYMBOL', default='BTC')
 
 # Configurações de depósito
 settings.DEPOSIT_FEE = config('DEPOSIT_FEE', default=Decimal('0.05'), cast=Decimal)
