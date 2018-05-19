@@ -4,6 +4,7 @@
 {% load widget_tweaks %}
 {% load pagination_tags %}
 {% load thumbnail %}
+{% load humanize %}
 
 {% block content %}
 	<h6 class="page-title"><i class="zmdi zmdi-shield-check"></i> {% trans "Confirm Deposit" %}</h6>
@@ -26,11 +27,11 @@
                 <div class="row">
                     <div class="col-sm-9">
                         {% trans "Deposit Amount:" %} 
-                        <h1>R$ {{ confirm_deposit_instance.range_amount|floatformat:2 }}</h1>
+                        <h1>R$ {{ confirm_deposit_instance.range_amount|floatformat:2|intcomma }}</h1>
                     </div>
                     <div class="col-sm-3">
                         {% trans "Original Amount:" %}
-                        <h6>R$ {{ confirm_deposit_instance.amount|floatformat:2 }}</h6>
+                        <h6>R$ {{ confirm_deposit_instance.amount|floatformat:2|intcomma }}</h6>
                     </div>
                 </div>
                 <div class="card m-t-20">
