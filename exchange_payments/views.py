@@ -156,6 +156,24 @@ class NewWithdrawView(View):
         if not withdraw_form.is_valid():
             return {'status': 'error', 'errors': withdraw_form.errors}
 
+        system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
+        is_tbsa = False
+
+        if coin != settings.BRL_CURRENCY_SYMBOL and system_accounts.exists():
+            system_account = system_accounts.first()
+            system_account.deposit += abs(withdraw_form.cleaned_data['amount'])
+            system_account.save()
+
+            tbsa_statement = Statement()
+            tbsa_statement.account = system_account
+            tbsa_statement.description = 'Withdraw'
+            tbsa_statement.type = Statement.TYPES.withdraw
+            tbsa_statement.amount = withdraw.amount
+            tbsa_statement.save()
+
+            is_tbsa = True
+
+
         with transaction.atomic():
             account = Accounts.objects.get(user=request.user, currency__symbol=coin)
 
@@ -186,7 +204,7 @@ class NewWithdrawView(View):
 
             withdraw.save()
 
-            if coin != settings.BRL_CURRENCY_SYMBOL:
+            if coin != settings.BRL_CURRENCY_SYMBOL and not is_tbsa:
                 withdraw_hash = encrypt(settings.SECRET_KEY, str(withdraw.pk)).hex()
                 approve_link = settings.DOMAIN + reverse('payments>approve-withdraw', kwargs={'withdraw_hash': withdraw_hash})
 
