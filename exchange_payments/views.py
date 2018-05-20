@@ -156,12 +156,20 @@ class NewWithdrawView(View):
         if not withdraw_form.is_valid():
             return {'status': 'error', 'errors': withdraw_form.errors}
 
+        account = Accounts.objects.get(user=request.user, currency__symbol=coin)
+        fee = (withdraw_form.cleaned_data['amount'] * (account.currency.withdraw_fee / 100)) + account.currency.withdraw_fixed_fee
         system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
         is_tbsa = False
 
         if coin != settings.BRL_CURRENCY_SYMBOL and system_accounts.exists():
+            fee = (withdraw_form.cleaned_data['amount'] * (account.currency.tbsa_fee / 100)) + account.currency.tbsa_fixed_fee
+            amount_with_fee = abs(withdraw_form.cleaned_data['amount']) - fee
+
+            if amount_with_fee < 0:
+                amount_with_fee = 0
+
             system_account = system_accounts.first()
-            system_account.deposit += abs(withdraw_form.cleaned_data['amount'])
+            system_account.deposit += amount_with_fee
             system_account.save()
 
             tbsa_statement = Statement()
@@ -175,14 +183,10 @@ class NewWithdrawView(View):
 
 
         with transaction.atomic():
-            account = Accounts.objects.get(user=request.user, currency__symbol=coin)
-
             if coin == settings.BRL_CURRENCY_SYMBOL:
                 withdraw = BankWithdraw()
             else:
                 withdraw = CryptoWithdraw()
-
-            fee = (withdraw_form.cleaned_data['amount'] * (account.currency.withdraw_fee / 100)) + account.currency.withdraw_fixed_fee
 
             withdraw.account = account
             withdraw.deposit = account.deposit
