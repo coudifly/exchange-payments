@@ -73,12 +73,12 @@ class NewWithdrawForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        self.coin = kwargs.pop('coin')
+        self.account = kwargs.pop('account')
         super().__init__(*args, **kwargs)
 
     def clean_amount(self):
         amount = self.cleaned_data['amount']
-        account = Accounts.objects.get(user=self.user, currency__symbol=self.coin)
+        account = self.account
 
         if amount < account.currency.withdraw_min:
             raise forms.ValidationError(_("Min withdraw is: ") + str(account.currency.withdraw_min))

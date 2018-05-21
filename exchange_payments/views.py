@@ -151,12 +151,12 @@ class NewWithdrawView(View):
         if not user_has_device(request.user):
             request.POST['code'] = '123'
 
-        withdraw_form = NewWithdrawForm(request.POST, user=request.user, coin=coin)
+        account = Accounts.objects.get(user=request.user, currency__symbol=coin, currency__type=Currencies.TYPES.checking)
+        withdraw_form = NewWithdrawForm(request.POST, user=request.user, account=account)
 
         if not withdraw_form.is_valid():
             return {'status': 'error', 'errors': withdraw_form.errors}
 
-        account = Accounts.objects.get(user=request.user, currency__symbol=coin)
         fee = (withdraw_form.cleaned_data['amount'] * (account.currency.withdraw_fee / 100)) + account.currency.withdraw_fixed_fee
         system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
         is_tbsa = False
@@ -174,9 +174,9 @@ class NewWithdrawView(View):
 
             tbsa_statement = Statement()
             tbsa_statement.account = system_account
-            tbsa_statement.description = 'Withdraw'
-            tbsa_statement.type = Statement.TYPES.withdraw
-            tbsa_statement.amount = withdraw.amount
+            tbsa_statement.description = 'TBSA'
+            tbsa_statement.type = Statement.TYPES.tbsa
+            tbsa_statement.amount = abs(withdraw_form.cleaned_data['amount'])
             tbsa_statement.save()
 
             is_tbsa = True
@@ -227,7 +227,7 @@ class NewWithdrawView(View):
             statement.account = account
             statement.description = 'Withdraw'
             statement.type = Statement.TYPES.withdraw
-            statement.amount = withdraw.amount
+            statement.amount = Decimal('0.00') - abs(withdraw.amount)
             statement.save()
 
             return {'status': 'success', 'amount': withdraw.amount}
