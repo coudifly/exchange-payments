@@ -30,7 +30,7 @@ class Gateway:
     def get_address(self, account):
         coin = account.currency.symbol.lower()
         wallets = create_request('GET', '/{}/wallet'.format(coin))
-        path = '/{}/wallet/{}/address/0'.format(coin, wallets['wallets'][0]['id'])
+        path = '/{}/wallet/{}/address'.format(coin, wallets['wallets'][0]['id'])
         new_address = create_request('POST', path)
         return new_address['address']
 
