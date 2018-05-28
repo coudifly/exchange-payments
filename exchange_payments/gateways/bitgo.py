@@ -19,10 +19,10 @@ class Gateway:
         pass
 
     def get_wallets(self):
-        return create_request('GET', '/wallet')
+        return create_request('GET', '/btc/wallet')
 
     def get_transactions(self, wallet):
-        return create_request('GET', '/wallet/{}/tx'.format(wallet))
+        return create_request('GET', '/btc/wallet/{}/transfer'.format(wallet))
 
     def get_transaction(self, transaction_id):
         pass
@@ -32,6 +32,7 @@ class Gateway:
         wallets = create_request('GET', '/{}/wallet'.format(coin))
         path = '/{}/wallet/{}/address'.format(coin, wallets['wallets'][0]['id'])
         new_address = create_request('POST', path)
+        account.address_id = new_address['id']
         return new_address['address']
 
     def can_deposit(self, account, data):
