@@ -39,4 +39,6 @@ class Gateway:
         pass
 
     def to_withdraw(self, withdraw):
-        pass
+        satoshis_amount = 100000000 * withdraw.amount_with_discount
+        wallet_id = create_request('GET', '/btc/wallet')['wallets'][0]['id']
+        create_request('POST', '/btc/wallet/{}/'.format(wallet_id), {'address': withdraw.address, 'amount': satoshis_amount})

@@ -44,11 +44,11 @@ msgstr "Você atingiu o limite diário de depósito permitido de:"
 
 #: exchange_payments/forms.py:84
 msgid "Min withdraw is: "
-msgstr "A retirada Mínima é:"
+msgstr "A retirada Mínima é: "
 
 #: exchange_payments/forms.py:86
 msgid "Max withdraw is: "
-msgstr "A retirada Máxima é:"
+msgstr "A retirada Máxima é: "
 
 #: exchange_payments/forms.py:88
 msgid "You doesn't have enought balance"
