@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db import transaction
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.urls import reverse
 from django_otp import user_has_device
@@ -19,7 +19,6 @@ from simplecrypt import encrypt, decrypt
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
 from exchange_payments.models import CurrencyGateway, BankDeposits, Credentials
-from exchange_payments.gateways.coinpayments import Gateway
 from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm, CredentialForm
 from templated_email import send_templated_mail
 
@@ -60,6 +59,10 @@ class ProcessWebhookView(View):
         gateway = gateway_module.Gateway()
         account = Accounts.objects.get(pk=account_pk)
 
+        # Validates if transaction already exists in our system
+        if Statement.objects.filter(tx_id=request.POST['txn_id']).exists():
+            raise Exception('Transaction already exists!')
+
         # Checa se o deposito pode ser feito
         if gateway.can_deposit(account, request.POST):
             # Adiciona o saldo na conta do usuario, e cria a entrada no extrato
@@ -72,6 +75,7 @@ class ProcessWebhookView(View):
                 statement.description = 'Deposit'
                 statement.amount = gateway.deposit_amount
                 statement.type = Statement.TYPES.deposit
+                statement.tx_id = gateway.tx_id
                 statement.save()
                 
                 return {'amount': statement.amount}

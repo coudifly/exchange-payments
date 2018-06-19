@@ -64,6 +64,7 @@ class Gateway:
                 fee = Decimal('0.00')
 
             self.deposit_amount = amount - fee
+            self.tx_id = data.get('txn_id', None)
             return True
 
     def to_withdraw(self, withdraw):
