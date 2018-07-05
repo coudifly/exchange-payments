@@ -48,7 +48,11 @@ class Gateway:
     def get_address(self, account):
         ipn_url = settings.DOMAIN + reverse('payments>proccess-webhook', kwargs={'gateway': 'coinpayments', 'account_pk': account.pk})
         address = post('get_callback_address', data={'currency': account.currency.symbol, 'ipn_url': ipn_url})
-        return address['result']
+        addr_items = []
+        for addr in address:
+            addr_items.append(addr[1])
+        return(addr)
+        # return address['result']
 
     def can_deposit(self, account, data):
         ipn_type = data['ipn_type']
