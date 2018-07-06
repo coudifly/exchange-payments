@@ -165,28 +165,27 @@ class NewWithdrawView(View):
         system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
         is_tbsa = False
 
-        if coin != settings.BRL_CURRENCY_SYMBOL and system_accounts.exists():
-            fee = (withdraw_form.cleaned_data['amount'] * (account.currency.tbsa_fee / 100)) + account.currency.tbsa_fixed_fee
-            amount_with_fee = abs(withdraw_form.cleaned_data['amount']) - fee
-
-            if amount_with_fee < 0:
-                amount_with_fee = 0
-
-            system_account = system_accounts.first()
-            system_account.deposit += amount_with_fee
-            system_account.save()
-
-            tbsa_statement = Statement()
-            tbsa_statement.account = system_account
-            tbsa_statement.description = 'TBSA'
-            tbsa_statement.type = Statement.TYPES.tbsa
-            tbsa_statement.amount = abs(withdraw_form.cleaned_data['amount'])
-            tbsa_statement.save()
-
-            is_tbsa = True
-
-
         with transaction.atomic():
+            if coin != settings.BRL_CURRENCY_SYMBOL and system_accounts.exists():
+                fee = (withdraw_form.cleaned_data['amount'] * (account.currency.tbsa_fee / 100)) + account.currency.tbsa_fixed_fee
+                amount_with_fee = abs(withdraw_form.cleaned_data['amount']) - fee
+
+                if amount_with_fee < 0:
+                    amount_with_fee = 0
+
+                system_account = system_accounts.first()
+                system_account.deposit += amount_with_fee
+                system_account.save()
+
+                tbsa_statement = Statement()
+                tbsa_statement.account = system_account
+                tbsa_statement.description = 'TBSA'
+                tbsa_statement.type = Statement.TYPES.tbsa
+                tbsa_statement.amount = abs(withdraw_form.cleaned_data['amount'])
+                tbsa_statement.save()
+
+                is_tbsa = True
+
             if coin == settings.BRL_CURRENCY_SYMBOL:
                 withdraw = BankWithdraw()
             else:
@@ -197,6 +196,7 @@ class NewWithdrawView(View):
             withdraw.reserved = account.reserved
             withdraw.amount = Decimal('0.00') - withdraw_form.cleaned_data['amount']
             withdraw.fee = fee
+            withdraw.description = request.POST.get('description', '').strip()
 
             if coin == settings.BRL_CURRENCY_SYMBOL:
                 br_bank_account = request.user.br_bank_account
