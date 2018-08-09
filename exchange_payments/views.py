@@ -18,8 +18,8 @@ from simplecrypt import encrypt, decrypt
 
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
-from exchange_payments.models import CurrencyGateway, BankDeposits, Credentials
-from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm, CredentialForm
+from exchange_payments.models import CurrencyGateway, BankDeposits
+from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
 from templated_email import send_templated_mail
 
 

@@ -5,9 +5,7 @@ from django.conf import settings
 from django_otp import user_has_device, match_token
 
 from exchange_core.mixins import RequiredFieldsMixin
-from exchange_core.choices import BR_BANKS_CHOICES
-from exchange_core.models import Accounts
-from exchange_payments.models import BankDeposits, CompanyBanks, Credentials
+from exchange_payments.models import BankDeposits, CompanyBanks
 
 
 class NewDepositForm(forms.ModelForm):
@@ -101,21 +99,3 @@ class NewWithdrawForm(forms.Form):
         if user_has_device(self.user) and not match_token(self.user, code):
             raise forms.ValidationError(_("Wrong two factor code informed"))
         return code
-
-
-class CredentialForm(forms.ModelForm):
-    password = forms.CharField(label=_("Your {} password").format(settings.PROJECT_NAME), widget=forms.PasswordInput())
-
-    class Meta:
-        model = Credentials
-        fields = ('code', 'password',)
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super().__init__(*args, **kwargs)
-
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        if not self.user.check_password(password):
-            raise forms.ValidationError(_("Wrong password informed"))
-        return password
