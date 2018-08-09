@@ -247,7 +247,7 @@ class NewWithdrawView(View):
 
 
 # Approve withdraw view
-@method_decorator(name='dispatch')
+@method_decorator([login_required], name='dispatch')
 class ApproveWithdrawView(View):
     def get(self, request, withdraw_hash):
         # Decrypt withdraw pk and gets withdraw from database
