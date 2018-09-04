@@ -18,8 +18,8 @@ from simplecrypt import encrypt, decrypt
 
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
-from exchange_payments.models import CurrencyGateway, BankDeposits, Credentials
-from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm, CredentialForm
+from exchange_payments.models import CurrencyGateway, BankDeposits
+from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
 from templated_email import send_templated_mail
 
 
@@ -216,13 +216,22 @@ class NewWithdrawView(View):
                 withdraw_hash = encrypt(settings.SECRET_KEY, str(withdraw.pk)).hex()
                 approve_link = settings.DOMAIN + reverse('payments>approve-withdraw', kwargs={'withdraw_hash': withdraw_hash})
 
-                # Envia o email de confirmacao do deposito
+                # Sends withdraw confirmation e-mail to admin
                 send_templated_mail(
                     template_name='approve-withdraw', 
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     context={'withdraw': withdraw, 'approve_link': approve_link}, 
                     recipient_list=settings.WITHDRAW_APPROVE_EMAILS
                 )
+
+                if settings.WITHDRAW_USER_SEND_CONFIRMATION:
+                    # Sends withdraw confirmation e-mail to user
+                    send_templated_mail(
+                        template_name='approve-withdraw',
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        context={'withdraw': withdraw, 'approve_link': approve_link},
+                        recipient_list=[request.user.email]
+                    )
 
             account.deposit -= abs(withdraw.amount)
             account.save()
@@ -237,50 +246,25 @@ class NewWithdrawView(View):
             return {'status': 'success', 'amount': withdraw.amount}
 
 
-# Automatizacao do saque em Criptomoeda
-@method_decorator([json_view], name='dispatch')
+# Approve withdraw view
+@method_decorator([login_required], name='dispatch')
 class ApproveWithdrawView(View):
     def get(self, request, withdraw_hash):
-        # Desencripta e pega o saque da crypto
+        # Decrypt withdraw pk and gets withdraw from database
         withdraw_pk = decrypt(settings.SECRET_KEY, bytes.fromhex(withdraw_hash))
         withdraw = CryptoWithdraw.objects.get(pk=withdraw_pk, status=CryptoWithdraw.STATUS.requested)
 
-        # Pega o gateway de pagamento da Criptomoeda
+        # Gets the payment gateway of the currency
         currency_gateway = CurrencyGateway.objects.get(currency=withdraw.account.currency)
         gateway_module = importlib.import_module('exchange_payments.gateways.{}'.format(currency_gateway.gateway))
         gateway = gateway_module.Gateway()
 
-        # Chama o metodo de saque da criptomoeda passando o saque ao metodo
+        # Calls the withdraw method from the payment gateway
         tx_id = gateway.to_withdraw(withdraw)
         withdraw.tx_id = tx_id
         withdraw.status = CryptoWithdraw.STATUS.paid
         withdraw.save()
 
-        return {'status': _("Success"), 'address': withdraw.address}
+        messages.success(request, _("Your withdraw was has been approved"))
 
-
-@method_decorator([login_required], name='dispatch')
-class CredentialsView(MultiFormView):
-    template_name = 'payments/credentials.html'
-
-    forms = {
-        'advcash': CredentialForm,
-    }
-
-    pass_user = [
-        'advcash'
-    ]
-
-    def get_advcash_instance(self):
-        credentials = Credentials.objects.filter(user=self.request.user, provider=Credentials.PROVIDERS.advcash)
-        if credentials.exists():
-            return credentials.first()
-
-    def advcash_form_valid(self, form):
-        credential = form.save(commit=False)
-        credential.user = self.request.user
-        credential.provider = Credentials.PROVIDERS.advcash
-        credential.save()
-
-        messages.success(self.request, _('Advcash credential has been updated!'))
-        return redirect(reverse('payments>credentials'))
+        return redirect(reverse(settings.HOME_VIEW))

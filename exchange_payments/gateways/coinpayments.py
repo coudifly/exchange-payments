@@ -78,7 +78,8 @@ class Gateway:
         data = {
             'amount': withdraw.amount_with_discount,
             'currency': withdraw.account.currency.symbol,
-            'address': withdraw.address
+            'address': withdraw.address,
+            'auto_confirm': settings.COINPAYMENTS_WITHDRAW_AUTO_CONFIRM
         }
         withdraw_response = post('create_withdrawal', data=data)
         return withdraw_response['result']['id']
