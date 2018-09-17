@@ -33,6 +33,7 @@ class CurrencyGateway(TimeStampedModel, BaseModel):
 
 # Armazena os bancos que serão usados para os depósitos feitos em REAL
 class CompanyBanks(TimeStampedModel, BaseModel):
+    currency = models.ForeignKey('exchange_core.Currencies', related_name='company_banks', null=True, on_delete=models.CASCADE, verbose_name=_("Currency"))
     bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Bank"))
     agency = models.CharField(max_length=10, verbose_name=_("Agency"))
     account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Account type"))
@@ -53,33 +54,22 @@ class CompanyBanks(TimeStampedModel, BaseModel):
 
 class BankDeposits(TimeStampedModel, BaseModel):
     STATUS = Choices('pending', 'confirmed', 'deposited', 'expired')
-
-    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE,
-                                     verbose_name=_("Company bank"))
-    user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE,
-                             verbose_name=_("User"))
+    company_bank = models.ForeignKey(CompanyBanks, related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("Company bank"))
+    user = models.ForeignKey('exchange_core.Users', related_name='bank_deposits', on_delete=models.CASCADE, verbose_name=_("User"))
     # Valor original do depósito
-    amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("R$ Amount"))
+    amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("Amount"))
     # O range_amount varia de acordo com o RANGE, se o range estiver desabilitado, range_amount será igual a 0
-    range_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'),
-                                       verbose_name=_("Range amount"))
+    range_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("Range amount"))
     # Armazena o valor liquido do depósito, que é o valor do amount - o valor da taxa de depósito
-    credited_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'),
-                                          verbose_name=_("Credited amount"))
-
-    holder_bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Holder bank"), null=True,
-                                   blank=True)
+    credited_amount = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.00'), verbose_name=_("Credited amount"))
+    holder_bank = models.CharField(max_length=10, choices=BR_BANKS_CHOICES, verbose_name=_("Holder bank"), null=True, blank=True)
     holder_agency = models.CharField(max_length=10, verbose_name=_("Holder agency"), null=True, blank=True)
-    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES,
-                                           verbose_name=_("Holder account type"), null=True, blank=True)
-    holder_account_number = models.CharField(max_length=20, verbose_name=_("Holder account number"), null=True,
-                                             blank=True)
+    holder_account_type = models.CharField(max_length=20, choices=BR_ACCOUNT_TYPES_CHOICES, verbose_name=_("Holder account type"), null=True, blank=True)
+    holder_account_number = models.CharField(max_length=20, verbose_name=_("Holder account number"), null=True, blank=True)
     holder_name = models.CharField(max_length=100, verbose_name=_("Holder name"), null=True, blank=True)
     holder_document = models.CharField(max_length=20, verbose_name=_("Holder document CPF/CNPJ"), null=True, blank=True)
-
     receipt = models.ImageField(null=True, blank=True)
     authentication_code = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Authentication code"))
-
     status = models.CharField(max_length=20, verbose_name=_("Status"), default=STATUS.pending, choices=STATUS)
 
     class Meta:
@@ -91,8 +81,7 @@ class BankDeposits(TimeStampedModel, BaseModel):
         if tries > 100:
             raise Exception('Too many tries for charge amount generation')
 
-        range_amount = round(
-            amount + Decimal(random.uniform(settings.BR_DEPOSIT_RANGE_START, settings.BR_DEPOSIT_RANGE_END)), 2)
+        range_amount = round(amount + Decimal(random.uniform(settings.BR_DEPOSIT_RANGE_START, settings.BR_DEPOSIT_RANGE_END)), 2)
         bank_deposits_today = cls.objects.filter(created__date=timezone.now(), range_amount=range_amount)
 
         # Se existir um deposito do usuário com o mesmo

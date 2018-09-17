@@ -18,6 +18,7 @@ from simplecrypt import encrypt, decrypt
 
 from exchange_core.models import Currencies, Accounts, Statement, BankWithdraw, CryptoWithdraw
 from exchange_core.base_views import MultiFormView
+from exchange_core.choices import CHECKING_TYPE
 from exchange_payments.models import CurrencyGateway, BankDeposits
 from exchange_payments.forms import NewDepositForm, ConfirmDepositForm, NewWithdrawForm
 from templated_email import send_templated_mail
@@ -155,7 +156,7 @@ class NewWithdrawView(View):
         if not user_has_device(request.user):
             request.POST['code'] = '123'
 
-        account = Accounts.objects.get(user=request.user, currency__symbol=coin, currency__type=Currencies.TYPES.checking)
+        account = Accounts.objects.get(user=request.user, currency__symbol=coin, currency__type=CHECKING_TYPE)
         withdraw_form = NewWithdrawForm(request.POST, user=request.user, account=account)
 
         if not withdraw_form.is_valid():
