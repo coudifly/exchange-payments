@@ -18,14 +18,6 @@ settings.COINPAYMENTS_PRIVATE_KEY = config('COINPAYMENTS_PRIVATE_KEY', default=N
 settings.COINPAYMENTS_DEPOSIT_WITH_FEE = config('COINPAYMENTS_DEPOSIT_WITH_FEE', default=True, cast=config.boolean)
 settings.COINPAYMENTS_WITHDRAW_AUTO_CONFIRM = config('COINPAYMENTS_WITHDRAW_AUTO_CONFIRM', default='0')
 
-# Tcoin config
-settings.TCOIN_RPC_USERNAME = config('TCOIN_RPC_USERNAME', default=None)
-settings.TCOIN_RPC_PASSWORD = config('TCOIN_RPC_PASSWORD', default=None)
-settings.TCOIN_RPC_URL = config('TCOIN_RPC_URL', default=None)
-settings.TCOIN_RPC_PROXY = config('TCOIN_RPC_PROXY', default=None)
-settings.TCOIN_SUBTRACT_FEE_FROM_AMOUNT = config('TCOIN_SUBTRACT_FEE_FROM_AMOUNT', default=False, cast=config.boolean)
-settings.TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS = config('TCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS', default=5, cast=int)
-
 # Bitcoinz config
 settings.BITCOINZ_RPC_USERNAME = config('BITCOINZ_RPC_USERNAME', default=None)
 settings.BITCOINZ_RPC_PASSWORD = config('BITCOINZ_RPC_PASSWORD', default=None)

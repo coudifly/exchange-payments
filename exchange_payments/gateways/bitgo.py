@@ -32,13 +32,12 @@ class Gateway:
         wallets = create_request('GET', '/{}/wallet'.format(coin))
         path = '/{}/wallet/{}/address'.format(coin, wallets['wallets'][0]['id'])
         new_address = create_request('POST', path)
-        account.address_id = new_address['id']
         return new_address['address']
 
     def can_deposit(self, account, data):
         pass
 
     def to_withdraw(self, withdraw):
-        satoshis_amount = 100000000 * withdraw.amount_with_discount
+        satoshis_amount = 100000000 * withdraw.net_amount
         wallet_id = create_request('GET', '/btc/wallet')['wallets'][0]['id']
         create_request('POST', '/btc/wallet/{}/'.format(wallet_id), {'address': withdraw.address, 'amount': satoshis_amount})

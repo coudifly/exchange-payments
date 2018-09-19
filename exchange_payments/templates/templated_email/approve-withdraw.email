@@ -12,7 +12,7 @@
 		<span>{% trans "Requested amount" %}: </span><strong>{{ withdraw.amount|floatformat:8 }}</strong><br>
 		<span>{% trans "Requested currency" %}: </span><strong>{{ withdraw.account.currency.name }} - {{ withdraw.account.currency.symbol }}</strong><br>
 		<span>{% trans "Fee" %}: </span><strong>{{ withdraw.fee|floatformat:8 }}</strong><br>
-		<span>{% trans "Payment amount" %}: </span><strong>{{ withdraw.amount_with_discount|floatformat:8 }}</strong><br>
+		<span>{% trans "Payment amount" %}: </span><strong>{{ withdraw.net_amount|floatformat:8 }}</strong><br>
 	</p>
 
 	<p>{% trans "Click on the link below to approve the withdraw" %}</p>

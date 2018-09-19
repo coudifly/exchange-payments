@@ -69,7 +69,7 @@ class Gateway:
 
     def to_withdraw(self, withdraw):
         data = {
-            'amount': withdraw.amount_with_discount,
+            'amount': withdraw.net_amount,
             'currency': withdraw.account.currency.symbol,
             'address': withdraw.address,
             'auto_confirm': settings.COINPAYMENTS_WITHDRAW_AUTO_CONFIRM
