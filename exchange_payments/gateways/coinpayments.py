@@ -47,7 +47,7 @@ class Gateway:
 
     def get_address(self, account):
         ipn_url = settings.DOMAIN + reverse('payments>proccess-webhook', kwargs={'gateway': 'coinpayments', 'account_pk': account.pk})
-        address = post('get_callback_address', data={'currency': account.currency.symbol, 'ipn_url': ipn_url})
+        address = post('get_callback_address', data={'currency': account.currency.code, 'ipn_url': ipn_url})
         return address['result']['address']
 
     def can_deposit(self, account, data):
@@ -58,7 +58,7 @@ class Gateway:
         fee = Decimal(data['fee'])
 
         # Checa se o deposito e valido
-        if ipn_type == 'deposit' and account.currency.symbol.upper() == currency.upper() and status >= 100:
+        if ipn_type == 'deposit' and account.currency.code.upper() == currency.upper() and status >= 100:
             # Verifica se e para descontar ou nao o valor do fee de 0.5% da coinpayments
             if not settings.COINPAYMENTS_DEPOSIT_WITH_FEE:
                 fee = Decimal('0.00')
@@ -70,7 +70,7 @@ class Gateway:
     def to_withdraw(self, withdraw):
         data = {
             'amount': withdraw.net_amount,
-            'currency': withdraw.account.currency.symbol,
+            'currency': withdraw.account.currency.code,
             'address': withdraw.address,
             'auto_confirm': settings.COINPAYMENTS_WITHDRAW_AUTO_CONFIRM
         }

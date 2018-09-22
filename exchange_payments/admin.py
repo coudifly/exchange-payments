@@ -6,10 +6,10 @@ from exchange_payments.models import CurrencyGateway, CompanyBanks, BankDeposits
 
 @admin.register(CurrencyGateway)
 class CurrencyGatewayAdmin(BaseAdmin):
-    list_display = ('currency', 'symbol', 'gateway')
+    list_display = ('currency', 'code', 'gateway')
 
-    def symbol(self, o):
-        return o.currency.symbol
+    def code(self, o):
+        return o.currency.code
 
     def has_delete_permission(self, *args, **kwargs):
         return False

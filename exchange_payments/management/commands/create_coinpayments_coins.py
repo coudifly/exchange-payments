@@ -37,13 +37,13 @@ class Command(BaseCommand):
 			try:
 				icon = BASE_URL + coin_row.cssselect('.coin-logo')[0].get('src')
 				name = coin_row.cssselect('.coin-link')[0].text
-				symbol = coin_row.cssselect('.table-data')[1].text
+				code = coin_row.cssselect('.table-data')[1].text
 
 				# Só cadastra moedas inexistentes
-				if not Currencies.objects.filter(symbol=symbol).exists():
+				if not Currencies.objects.filter(code=code).exists():
 					currency = Currencies()
 					currency.name = name
-					currency.symbol = symbol
+					currency.code = code
 					currency.save()
 
 					# Faz o upload do icone
@@ -57,6 +57,6 @@ class Command(BaseCommand):
 					currency_gateway.gateway = 'coinpayments'
 					currency_gateway.save()
 
-					print('Cadastrando moeda {} -> {}'.format(name, symbol))
+					print('Cadastrando moeda {} -> {}'.format(name, code))
 			except Exception as e:
 				continue

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% block subject %}{% trans "Confirm withdraw" %} {{ withdraw.amount|floatformat:8 }} - {{ withdraw.account.currency.symbol }} {% trans "for user" %} {{ withdraw.account.user.username }}{% endblock %}
+{% block subject %}{% trans "Confirm withdraw" %} {{ withdraw.amount|floatformat:8 }} - {{ withdraw.account.currency.code }} {% trans "for user" %} {{ withdraw.account.user.username }}{% endblock %}
 
 {% block html %}
 	<h2>{% trans "A new withdraw has been requested" %}</h2>
@@ -10,7 +10,7 @@
 		<span>{% trans "Requested at" %}: </span><strong>{{ withdraw.created|date:"SHORT_DATETIME_FORMAT" }}</strong><br>
 		<span>{% trans "Requested user balance" %}: </span><strong>{{ withdraw.account.balance|floatformat:8 }}</strong><br>
 		<span>{% trans "Requested amount" %}: </span><strong>{{ withdraw.amount|floatformat:8 }}</strong><br>
-		<span>{% trans "Requested currency" %}: </span><strong>{{ withdraw.account.currency.name }} - {{ withdraw.account.currency.symbol }}</strong><br>
+		<span>{% trans "Requested currency" %}: </span><strong>{{ withdraw.account.currency.name }} - {{ withdraw.account.currency.code }}</strong><br>
 		<span>{% trans "Fee" %}: </span><strong>{{ withdraw.fee|floatformat:8 }}</strong><br>
 		<span>{% trans "Payment amount" %}: </span><strong>{{ withdraw.net_amount|floatformat:8 }}</strong><br>
 	</p>

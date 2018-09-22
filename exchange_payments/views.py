@@ -29,7 +29,7 @@ class GetAddressView(View):
     def post(self, request):
         address = None
         coin = request.POST['coin']
-        currencies = Currencies.objects.filter(symbol=coin)
+        currencies = Currencies.objects.filter(code=coin)
 
         if currencies.exists():
             currency = currencies.first()
@@ -149,14 +149,14 @@ class NewWithdrawView(View):
 
         # Define um valor padrao para o address caso o deposito seja em reais
         # Fazemos isto, pois esse campo precisa passar pela validacao do formulario
-        if coin == settings.BRL_CURRENCY_SYMBOL:
+        if coin == settings.BRL_CURRENCY_CODE:
             request.POST['address'] = 'whatever'
         # Define um valor padrao para code do two factor, caso o usuario nao tenha configurado ele ainda
         # Fazemos isto, pois esse campo precisa passar pela validacao do formulario
         if not user_has_device(request.user):
             request.POST['code'] = '123'
 
-        account = Accounts.objects.get(user=request.user, currency__symbol=coin, currency__type=CHECKING_TYPE)
+        account = Accounts.objects.get(user=request.user, currency__code=coin, currency__type=CHECKING_TYPE)
         withdraw_form = NewWithdrawForm(request.POST, user=request.user, account=account)
 
         if not withdraw_form.is_valid():
@@ -166,7 +166,7 @@ class NewWithdrawView(View):
         system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
         is_tbsa = False
 
-        if coin != settings.BRL_CURRENCY_SYMBOL and system_accounts.exists():
+        if coin != settings.BRL_CURRENCY_CODE and system_accounts.exists():
             fee = (withdraw_form.cleaned_data['amount'] * (account.currency.tbsa_fee / 100)) + account.currency.tbsa_fixed_fee
             amount_with_fee = abs(withdraw_form.cleaned_data['amount']) - fee
 
@@ -188,7 +188,7 @@ class NewWithdrawView(View):
 
 
         with transaction.atomic():
-            if coin == settings.BRL_CURRENCY_SYMBOL:
+            if coin == settings.BRL_CURRENCY_CODE:
                 withdraw = BankWithdraw()
             else:
                 withdraw = CryptoWithdraw()
@@ -199,7 +199,7 @@ class NewWithdrawView(View):
             withdraw.amount = Decimal('0.00') - withdraw_form.cleaned_data['amount']
             withdraw.fee = fee
 
-            if coin == settings.BRL_CURRENCY_SYMBOL:
+            if coin == settings.BRL_CURRENCY_CODE:
                 br_bank_account = request.user.br_bank_account
 
                 withdraw.bank = br_bank_account.bank
@@ -213,7 +213,7 @@ class NewWithdrawView(View):
 
             withdraw.save()
 
-            if coin != settings.BRL_CURRENCY_SYMBOL and not is_tbsa:
+            if coin != settings.BRL_CURRENCY_CODE and not is_tbsa:
                 withdraw_hash = encrypt(settings.SECRET_KEY, str(withdraw.pk)).hex()
                 approve_link = settings.DOMAIN + reverse('payments>approve-withdraw', kwargs={'withdraw_hash': withdraw_hash})
 

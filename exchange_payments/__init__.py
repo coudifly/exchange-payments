@@ -50,10 +50,10 @@ settings.SUPPORTED_PAYMENT_GATEWAYS = [
 ]
 
 # Currencies config
-settings.BRL_CURRENCY_SYMBOL = config('BRL_CURRENCY_SYMBOL', default='BRL')
-settings.TCOIN_CURRENCY_SYMBOL = config('TCOIN_CURRENCY_SYMBOL', default='TCN')
-settings.BITCOINZ_CURRENCY_SYMBOL = config('BITCOINZ_CURRENCY_SYMBOL', default='BTCZ')
-settings.BITCOIN_CURRENCY_SYMBOL = config('BITCOIN_CURRENCY_SYMBOL', default='BTC')
+settings.BRL_CURRENCY_CODE = config('BRL_CURRENCY_CODE', default='BRL')
+settings.TCOIN_CURRENCY_CODE = config('TCOIN_CURRENCY_CODE', default='TCN')
+settings.BITCOINZ_CURRENCY_CODE = config('BITCOINZ_CURRENCY_CODE', default='BTCZ')
+settings.BITCOIN_CURRENCY_CODE = config('BITCOIN_CURRENCY_CODE', default='BTC')
 
 # Deposit config
 settings.DEPOSIT_FEE = config('DEPOSIT_FEE', default=Decimal('0.05'), cast=Decimal)

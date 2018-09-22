@@ -22,8 +22,8 @@ class Command(BaseCommand):
                     if tx['category'] != 'receive' or tx['amount'] <= 0:
                         continue
 
-                    # Pega a conta TCOIN do usuario usando a carteira dele
-                    currency = Currencies.objects.get(symbol=settings.BITCOIN_CURRENCY_SYMBOL)
+                    # Pega a conta Bitcoin do usuario usando a carteira dele
+                    currency = Currencies.objects.get(code=settings.BITCOIN_CURRENCY_CODE)
                     accounts = Accounts.objects.filter(currency=currency, deposit_address=tx['address'])
 
                     # Se a conta para a carteira nao existir, vai para a proxima transacao
