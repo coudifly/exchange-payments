@@ -36,8 +36,8 @@ class GetAddressView(View):
             account = Accounts.objects.get(user=request.user, currency=currency)
 
 
-            if account.deposit_address:
-                address = account.deposit_address
+            if account.address:
+                address = account.address
             else:
                 # Importa dinamicamente o modulo do gateway configurado para a moeda
                 currency_gateway = CurrencyGateway.objects.get(currency=currency)
@@ -46,7 +46,7 @@ class GetAddressView(View):
                 address = gateway.get_address(account)
 
                 # Associa a nova carteira a conta da moeda do usuário
-                account.deposit_address = address
+                account.address = address
                 account.save()
 
         return {'address': address}
@@ -163,7 +163,7 @@ class NewWithdrawView(View):
             return {'status': 'error', 'errors': withdraw_form.errors}
 
         fee = (withdraw_form.cleaned_data['amount'] * (account.currency.withdraw_fee / 100)) + account.currency.withdraw_fixed_fee
-        system_accounts = Accounts.objects.filter(deposit_address=withdraw_form.cleaned_data['address'])
+        system_accounts = Accounts.objects.filter(address=withdraw_form.cleaned_data['address'])
         is_tbsa = False
 
         if coin != settings.BRL_CURRENCY_CODE and system_accounts.exists():
