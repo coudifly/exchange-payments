@@ -53,6 +53,7 @@ settings.SUPPORTED_PAYMENT_GATEWAYS = [
     ('bitcoin', 'Bitcoin'),
     ('bitcoinz', 'Bitcoin Z'),
     ('bitgo', 'BitGo'),
+    ('bepay', 'BePay'),
 ]
 
 # Currencies config

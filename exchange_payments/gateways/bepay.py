@@ -91,4 +91,34 @@ class Gateway:
         pass
 
     def to_withdraw(self, withdraw):
-        pass
+        amount = str(int(withdraw.net_amount))
+        external_identifier = str(withdraw.pk)
+        account_type = 1 if withdraw.account_type == 'checking' else 2
+
+        data = {
+            'totalAmount': amount,
+            'currency': 'BRL',
+            'withdrawInfo': {
+                'withdrawType': 'BankTransfer',
+                'bankTransfer': {
+                    'bankDestination': withdraw.bank,
+                    'branchDestination': withdraw.agency,
+                    'accountDestination': withdraw.account_number,
+                    'taxIdentifier': {
+                        'taxId': withdraw.account.user.document_1,
+                        'country': 'BRA'
+                    },
+                    'personType': 'PERSON',
+                    'name': withdraw.account.user.name,
+                    'accountTypeDestination': str(account_type)
+                }
+            },
+            'externalIdentifier': external_identifier
+        }
+
+        account_id = self.get_account_id(withdraw.account)
+        tx_hash = hash_256(amount + account_id + withdraw.bank + withdraw.agency + withdraw.account_number)
+        headers = {'Api-Access-Key': settings.BEPAY_API_ACCESS_KEY, 'Transaction-Hash': tx_hash}
+        response = requests.post(settings.BEPAY_SERVER_URL + f'accounts/{account_id}/withdraw', json=data, headers=headers).json()
+        valid_response = self.raise_if_error(response)
+        return valid_response['data']['transactionId']
