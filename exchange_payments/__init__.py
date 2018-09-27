@@ -40,20 +40,26 @@ settings.BITCOIN_CONFIRM_PAYMENTS_WAIT_SECONDS = config('BITCOIN_CONFIRM_PAYMENT
 settings.BITGO_SERVER_URL = config('BITGO_SERVER_URL', default=None)
 settings.BITGO_ACCESS_TOKEN = config('BITGO_ACCESS_TOKEN', default=None)
 
+# Bepay config
+settings.BEPAY_SERVER_URL = config('BEPAY_SERVER_URL', default=None)
+settings.BEPAY_SECRET_KEY = config('BEPAY_SECRET_KEY', default=None)
+settings.BEPAY_API_ACCESS_KEY = config('BEPAY_API_ACCESS_KEY', default=None)
+settings.BEPAY_MASTER_ACCOUNT_ID = config('BEPAY_MASTER_ACCOUNT_ID', default=None)
+settings.BEPAY_MASTER_TAX_ID = config('BEPAY_MASTER_TAX_ID', default=None)
+
 # Supported gateways list
 settings.SUPPORTED_PAYMENT_GATEWAYS = [
     ('coinpayments', 'CoinPayments'),
-    ('tcoin', 'Tcoin'),
     ('bitcoin', 'Bitcoin'),
     ('bitcoinz', 'Bitcoin Z'),
     ('bitgo', 'BitGo'),
 ]
 
 # Currencies config
-settings.BRL_CURRENCY_SYMBOL = config('BRL_CURRENCY_SYMBOL', default='BRL')
-settings.TCOIN_CURRENCY_SYMBOL = config('TCOIN_CURRENCY_SYMBOL', default='TCN')
-settings.BITCOINZ_CURRENCY_SYMBOL = config('BITCOINZ_CURRENCY_SYMBOL', default='BTCZ')
-settings.BITCOIN_CURRENCY_SYMBOL = config('BITCOIN_CURRENCY_SYMBOL', default='BTC')
+settings.BRL_CURRENCY_CODE = config('BRL_CURRENCY_CODE', default='BRL')
+settings.TCOIN_CURRENCY_CODE = config('TCOIN_CURRENCY_CODE', default='TCN')
+settings.BITCOINZ_CURRENCY_CODE = config('BITCOINZ_CURRENCY_CODE', default='BTCZ')
+settings.BITCOIN_CURRENCY_CODE = config('BITCOIN_CURRENCY_CODE', default='BTC')
 
 # Deposit config
 settings.DEPOSIT_FEE = config('DEPOSIT_FEE', default=Decimal('0.05'), cast=Decimal)

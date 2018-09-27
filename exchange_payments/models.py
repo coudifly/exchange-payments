@@ -17,10 +17,11 @@ from exchange_core.choices import BR_BANKS_CHOICES, BR_ACCOUNT_TYPES_CHOICES
 """
 
 
+
+
 # Diz para o moeda X que gateway ela deverá usar
 class CurrencyGateway(TimeStampedModel, BaseModel):
-    currency = models.OneToOneField('exchange_core.Currencies', related_name='gateway', verbose_name=_("Currency"),
-                                    on_delete=models.CASCADE)
+    currency = models.OneToOneField('exchange_core.Currencies', related_name='gateway', verbose_name=_("Currency"), on_delete=models.CASCADE)
     gateway = models.CharField(max_length=50, choices=settings.SUPPORTED_PAYMENT_GATEWAYS, verbose_name=_("Gateway"))
 
     def __str__(self):

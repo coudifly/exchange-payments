@@ -30,12 +30,12 @@ msgstr "- Selecione seu banco -"
 #: exchange_payments/forms.py:30
 #: exchange_payments/templates/payments/bank-deposit.html:30
 msgid "Min deposit is: "
-msgstr "O deposito Mínimo é:"
+msgstr "O deposito mínimo é: "
 
 #: exchange_payments/forms.py:33
 #: exchange_payments/templates/payments/bank-deposit.html:31
 msgid "Max deposit is: "
-msgstr "O depósito Máximo é:"
+msgstr "O depósito máximo é: "
 
 #: exchange_payments/forms.py:36
 #: exchange_payments/templates/payments/bank-deposit.html:63
@@ -44,11 +44,11 @@ msgstr "Você atingiu o limite diário de depósito permitido de:"
 
 #: exchange_payments/forms.py:84
 msgid "Min withdraw is: "
-msgstr "A retirada Mínima é: "
+msgstr "Saque mínimo de: "
 
 #: exchange_payments/forms.py:86
 msgid "Max withdraw is: "
-msgstr "A retirada Máxima é: "
+msgstr "Saque máximo de: "
 
 #: exchange_payments/forms.py:88
 msgid "You doesn't have enought balance"
@@ -329,27 +329,27 @@ msgstr "Salvar"
 
 #: exchange_payments/templates/payments/withdraw.html:7
 msgid "Withdraw "
-msgstr "Retirada"
+msgstr "Retirada "
 
 #: exchange_payments/templates/payments/withdraw.html:14
-msgid "How much do you want to take out?"
-msgstr "Quanto deseja retirar?"
+msgid "Quantity to be transfered"
+msgstr "Quantidade a ser transferida"
 
 #: exchange_payments/templates/payments/withdraw.html:15
-msgid " withdraw amount"
-msgstr "Quantidade de Retirada"
+msgid "Quantity in"
+msgstr "Quantidade em"
 
 #: exchange_payments/templates/payments/withdraw.html:23
 msgid "Min withdraw amount is:"
-msgstr "A quantidade Mínima de retirada é:"
+msgstr "A quantidade mínima de retirada é:"
 
 #: exchange_payments/templates/payments/withdraw.html:24
 msgid "Max withdraw amount is:"
-msgstr "A quantidade Máxima de retirada é:"
+msgstr "A quantidade máxima de retirada é:"
 
 #: exchange_payments/templates/payments/withdraw.html:25
 msgid "Withdraw fee is:"
-msgstr "A Taxa de retirada é:"
+msgstr "A taxa de retirada é:"
 
 #: exchange_payments/templates/payments/withdraw.html:26
 msgid "Max receive hours is:"
@@ -373,11 +373,11 @@ msgstr "Endereço da carteira para transferir seus valores"
 
 #: exchange_payments/templates/payments/withdraw.html:46
 msgid "Your account password"
-msgstr "A senha da sua Conta"
+msgstr "A senha da sua conta"
 
 #: exchange_payments/templates/payments/withdraw.html:47
 msgid "account password"
-msgstr "Senha da Conta"
+msgstr "Senha da conta"
 
 #: exchange_payments/templates/payments/withdraw.html:53
 #: exchange_payments/templates/payments/withdraw.html:67
@@ -393,8 +393,8 @@ msgid "two factor code"
 msgstr "Código de Autenticação de 2 Fatores"
 
 #: exchange_payments/templates/payments/withdraw.html:72
-msgid "Finish Withdraw"
-msgstr "Finalizar a Retirada"
+msgid "To Transfer"
+msgstr "Transferir"
 
 #: exchange_payments/views.py:79
 msgid "Deposit can't be done."

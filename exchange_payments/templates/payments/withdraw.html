@@ -11,8 +11,8 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>{% trans "How much do you want to take out?" %}</label>
-          <input type="number" :class="{'form-control': true, 'parsley-error': errors.amount}" :placeholder="coin + 's{% trans " withdraw amount" %}'" step="0.0001" v-model="amount">
+          <label>{% trans "Quantity to be transfered" %}</label>
+          <input type="number" :class="{'form-control': true, 'parsley-error': errors.amount}" :placeholder="'{% trans "Quantity in" %} ' + coin" step="0.0001" v-model="amount">
           <div class="help-block form-text text-muted form-control-feedback" v-show="errors.amount">
           	<ul class="parsley-errors-list filled">
           		<li v-for="error_message in errors.amount" v-text="error_message"></li>
@@ -69,7 +69,7 @@
         {% endif %}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-block" style="margin-top: -20px;" :disabled="is_loading" @click.prevent="new_withdraw()">{% trans "Finish Withdraw" %}</button>
+        <button type="button" class="btn btn-primary btn-block" style="margin-top: -20px;" :disabled="is_loading" @click.prevent="new_withdraw()">{% trans "To Transfer" %}</button>
       </div>
     </div>
   </div>

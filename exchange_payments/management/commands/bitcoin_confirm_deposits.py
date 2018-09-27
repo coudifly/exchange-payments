@@ -23,8 +23,8 @@ class Command(BaseCommand):
                         continue
 
                     # Pega a conta TCOIN do usuario usando a carteira dele
-                    currency = Currencies.objects.get(symbol=settings.BITCOIN_CURRENCY_SYMBOL)
-                    accounts = Accounts.objects.filter(currency=currency, deposit_address=tx['address'])
+                    currency = Currencies.objects.get(code=settings.BITCOIN_CURRENCY_CODE)
+                    accounts = Accounts.objects.filter(currency=currency, address=tx['address'])
 
                     # Se a conta para a carteira nao existir, vai para a proxima transacao
                     if not accounts.exists():
