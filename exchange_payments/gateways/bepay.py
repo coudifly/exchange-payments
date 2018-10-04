@@ -66,6 +66,13 @@ class Gateway:
         response = requests.get(settings.BEPAY_SERVER_URL + f'/accounts/{account_id}/balance', headers=headers).json()
         return self.raise_if_error(response)
 
+    def get_statement(self, account):
+        account_id = self.get_account_id(account)
+        tx_hash = hash_256(account_id)
+        headers = {'Api-Access-Key': settings.BEPAY_API_ACCESS_KEY, 'Transaction-Hash': tx_hash}
+        response = requests.get(settings.BEPAY_SERVER_URL + f'/accounts/{account_id}/statement', headers=headers).json()
+        return self.raise_if_error(response)
+
     def transfer_money(self, account, amount):
         account_id = self.get_account_id(account)
         data = {'totalAmount': amount,
