@@ -13,9 +13,9 @@ from exchange_payments.gateways.bitgo import Gateway
 bitgo = Gateway()
 
 
-def check_transaction(output):
+def check_transaction(entry):
     with transaction.atomic():
-        accounts = Accounts.objects.filter(deposit_address=output['address'])
+        accounts = Accounts.objects.filter(deposit_address=entry['address'])
 
         if not accounts.exists():
             return
@@ -23,10 +23,10 @@ def check_transaction(output):
         account = accounts.first()
         print('Processando conta do usuario {}'.format(account.user.username))
 
-        if Statement.objects.filter(account=account, tx_id=output['id']).exists():
+        if Statement.objects.filter(account=account, tx_id=entry['id']).exists():
             return
 
-        satoshis = Decimal(output['value'])
+        satoshis = Decimal(entry['value'])
 
         if satoshis < 0:
             return
@@ -37,7 +37,7 @@ def check_transaction(output):
 
         statement = Statement()
         statement.account = account
-        statement.tx_id = output['id']
+        statement.tx_id = entry['id']
         statement.amount = amount
         statement.description = 'Deposit'
         statement.type = Statement.TYPES.deposit
@@ -52,13 +52,13 @@ class Command(BaseCommand):
     help = 'Confirm bitgo transfers'
 
     def handle(self, *args, **options):
-        while True:
-            wallets = bitgo.get_wallets()
+        wallets = bitgo.get_wallets()
 
+        while True:
             for wallet in wallets['wallets']:
                 transactions = bitgo.get_transactions(wallet['id'])
 
                 for transfer in transactions['transfers']:
-                    gevent.wait([gevent.spawn(check_transaction, output) for output in transfer['outputs']])
+                    gevent.wait([gevent.spawn(check_transaction, entry) for entry in transfer['entries']])
 
             time.sleep(30)
