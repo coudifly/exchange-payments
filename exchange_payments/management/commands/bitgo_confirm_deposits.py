@@ -13,9 +13,9 @@ from exchange_payments.gateways.bitgo import Gateway
 bitgo = Gateway()
 
 
-def check_transaction(entry):
+def check_transaction(output):
     with transaction.atomic():
-        accounts = Accounts.objects.filter(address=entry['address'])
+        accounts = Accounts.objects.filter(address=output['address'])
 
         if not accounts.exists():
             return
@@ -23,10 +23,10 @@ def check_transaction(entry):
         account = accounts.first()
         print('Processando conta do usuario {}'.format(account.user.username))
 
-        if Statement.objects.filter(account=account, tx_id=entry['id']).exists():
+        if Statement.objects.filter(account=account, tx_id=output['id']).exists():
             return
 
-        satoshis = Decimal(entry['value'])
+        satoshis = Decimal(output['value'])
 
         if satoshis < 0:
             return
@@ -37,7 +37,7 @@ def check_transaction(entry):
 
         statement = Statement()
         statement.account = account
-        statement.tx_id = entry['id']
+        statement.tx_id = output['id']
         statement.amount = amount
         statement.description = 'Deposit'
         statement.type = Statement.TYPES.deposit
@@ -59,6 +59,6 @@ class Command(BaseCommand):
                 transactions = bitgo.get_transactions(wallet['id'])
 
                 for transfer in transactions['transfers']:
-                    gevent.wait([gevent.spawn(check_transaction, entry) for entry in transfer['entries']])
+                    gevent.wait([gevent.spawn(check_transaction, output) for output in transfer['outputs']])
 
             time.sleep(30)
