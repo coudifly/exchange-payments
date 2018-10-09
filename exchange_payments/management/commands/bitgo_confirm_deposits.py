@@ -15,7 +15,7 @@ bitgo = Gateway()
 
 def check_transaction(entry):
     with transaction.atomic():
-        accounts = Accounts.objects.filter(deposit_address=entry['address'])
+        accounts = Accounts.objects.filter(address=entry['address'])
 
         if not accounts.exists():
             return
