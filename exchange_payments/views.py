@@ -253,7 +253,7 @@ class ApproveWithdrawView(View):
     def get(self, request, withdraw_hash):
         # Decrypt withdraw pk and gets withdraw from database
         withdraw_pk = decrypt(settings.SECRET_KEY, bytes.fromhex(withdraw_hash))
-        withdraw = CryptoWithdraw.objects.get(pk=withdraw_pk, status=CryptoWithdraw.STATUS.requested)
+        withdraw = CryptoWithdraw.objects.get(pk=withdraw_pk.encode(), status=CryptoWithdraw.STATUS.requested)
 
         # Gets the payment gateway of the currency
         currency_gateway = CurrencyGateway.objects.get(currency=withdraw.account.currency)
