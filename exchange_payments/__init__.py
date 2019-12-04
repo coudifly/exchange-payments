@@ -1,10 +1,7 @@
 from decimal import Decimal
 
 from django.conf import settings
-from prettyconf.configuration import Configuration
-
-# Tells to prettyconf the env path to starting search the .env config file
-config = Configuration(starting_path=settings.BASE_DIR)
+from prettyconf import config
 
 # Define module name
 PACKAGE_NAME = 'exchange_payments'
