@@ -6,9 +6,14 @@ BITGO_SERVER_URL = settings.BITGO_SERVER_URL
 BITGO_ACCESS_TOKEN = settings.BITGO_ACCESS_TOKEN
 
 def create_request(request_type, path, data={}, **kwargs):
+    proxyDict = {
+        "http": 'http://fixie:iLNZRfuLkUCjz3R@velodrome.usefixie.com:80',
+        "https": 'http://fixie:iLNZRfuLkUCjz3R@velodrome.usefixie.com:80'
+    }
+
     headers = {'authorization': "Bearer " + BITGO_ACCESS_TOKEN}
     endpoint = '{}{}'.format(BITGO_SERVER_URL, path)
-    return requests.request(request_type, endpoint, headers=headers, json=data, **kwargs).json()
+    return requests.request(request_type, endpoint, headers=headers, json=data, proxies=proxyDict, **kwargs).json()
 
 
 
