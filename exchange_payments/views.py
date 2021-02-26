@@ -26,15 +26,14 @@ from templated_email import send_templated_mail
 
 @method_decorator([login_required, json_view], name='dispatch')
 class GetAddressView(View):
-    def post(self, request):
+    def get(self, request):
         address = None
-        coin = request.POST['coin']
+        coin = request.GET['coin']
         currencies = Currencies.objects.filter(code=coin)
 
         if currencies.exists():
             currency = currencies.first()
             account = Accounts.objects.get(user=request.user, currency=currency)
-
 
             if account.address:
                 address = account.address

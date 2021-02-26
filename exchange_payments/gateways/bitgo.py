@@ -5,16 +5,11 @@ from django.conf import settings
 BITGO_SERVER_URL = settings.BITGO_SERVER_URL
 BITGO_ACCESS_TOKEN = settings.BITGO_ACCESS_TOKEN
 
-def create_request(request_type, path, data={}, **kwargs):
-    proxyDict = {
-        "http": 'http://fixie:iLNZRfuLkUCjz3R@velodrome.usefixie.com:80',
-        "https": 'http://fixie:iLNZRfuLkUCjz3R@velodrome.usefixie.com:80'
-    }
 
+def create_request(request_type, path, data={}, **kwargs):
     headers = {'authorization': "Bearer " + BITGO_ACCESS_TOKEN}
     endpoint = '{}{}'.format(BITGO_SERVER_URL, path)
-    return requests.request(request_type, endpoint, headers=headers, json=data, proxies=proxyDict, **kwargs).json()
-
+    return requests.request(request_type, endpoint, headers=headers, json=data, **kwargs).json()
 
 
 class Gateway:
@@ -31,7 +26,7 @@ class Gateway:
         pass
 
     def get_address(self, account):
-        coin = account.currency.code.lower()
+        coin = 'btc'
         wallets = create_request('GET', '/{}/wallet'.format(coin))
         path = '/{}/wallet/{}/address'.format(coin, wallets['wallets'][0]['id'])
         new_address = create_request('POST', path)
